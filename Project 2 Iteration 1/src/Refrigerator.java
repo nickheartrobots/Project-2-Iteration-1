@@ -11,7 +11,6 @@ public class Refrigerator {
 		fridge = Fridge.instance();
 		freezer = Freezer.instance();
 		
-		
 	}
 	
 	public static Refrigerator instance(){
