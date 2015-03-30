@@ -18,20 +18,18 @@
  *            damage resulting from its use.
  */
 public class Clock implements Runnable {
-	private static Fridge fridge;
-	private static Freezer freezer;
+	private static Refrigerator refrigerator;
 	
 	/**
-	 * Creates the Microwave instance and start the thread
+	 * Creates the Refrigerator instance and starts the thread
 	 */
 	public Clock() {
-		fridge = Fridge.instance();
-		freezer = Freezer.instance();
+		refrigerator = Refrigerator.instance();
 		new Thread(this).start();
 	}
 
 	/**
-	 * Keep ticking every second and call the microwave's clockTicked method
+	 * Keep ticking every second and call the Refrigerator system's clockTicked method
 	 * 
 	 */
 	@Override
@@ -39,8 +37,8 @@ public class Clock implements Runnable {
 		try {
 			while (true) {
 				Thread.sleep(1000);
-				fridge.clockTicked();
-				freezer.clockTicked();
+				refrigerator.clockTicked();
+				
 			}
 		} catch (InterruptedException ie) {
 		}

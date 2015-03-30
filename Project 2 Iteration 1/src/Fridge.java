@@ -17,7 +17,5 @@ public class Fridge extends RefrigeratorComponent {
 	
 	
 	
-	public void clockTicked(){
-		
-	}
+
 }

@@ -3,11 +3,23 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
+
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileFilter;
 
 public class GUI extends JFrame {
 	public static final String FRIDGE_LIGHT_ON = "Fridge Light <on>";
@@ -16,6 +28,12 @@ public class GUI extends JFrame {
 	public static final String FREEZER_LIGHT_OFF = "Freezer Light <off>";
 	
 	private Refrigerator refrigerator;
+	
+	//Input variables
+	private JFileChooser fileOpen;
+	private File txtFile;
+	private String location;
+	private List<String> content = new ArrayList<String>();
 	
 	private Point defaultLocation;
 	private final int frameWidth = 525;
@@ -30,6 +48,7 @@ public class GUI extends JFrame {
 	private JButton setFridgeTemp;
 	private JButton setFreezerTemp;
 	
+	private JTextField fieldShowName;
 	private JTextField roomField;
 	private JTextField fridgeField;
 	private JTextField freezerField;
@@ -43,7 +62,7 @@ public class GUI extends JFrame {
 	
 	private Listen listen;
 	
-	public GUI(){
+	public GUI(File file){
 		refrigerator = Refrigerator.instance();
 		refrigerator.setGUI(this);
 		
@@ -57,6 +76,7 @@ public class GUI extends JFrame {
 		setPreferredSize(new Dimension(frameWidth, frameHeight));
 		pack();
 		setVisible(true);
+		fileScan(file);
 	}
 	
 	private void centerGUI() {
@@ -75,20 +95,37 @@ public class GUI extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource() == setRoomTemp){
+				try{
 				String t1 = roomField.getText();
 				float t2 = Float.parseFloat(t1);
-				
 				refrigerator.setRoomTemp(t2);
+				roomField.setText("Temp set.");
+				}catch(NumberFormatException nfe){
+					roomField.setText("Use a number.");
+				}
+				
+				
 			} else if (e.getSource() == setFridgeTemp){
+				try{
 				String t1 = fridgeField.getText();
 				float t2 = Float.parseFloat(t1);
 				
 				refrigerator.setFridgeTemp(t2);
+				fridgeField.setText("Temp set.");
+				}catch(NumberFormatException nfe){
+					fridgeField.setText("Use a number.");
+				}
+				
 			} else if (e.getSource() == setFreezerTemp){
+				try{
 				String t1 = freezerField.getText();
 				float t2 = Float.parseFloat(t1);
 				
 				refrigerator.setFreezerTemp(t2);
+				freezerField.setText("Temp set.");
+				}catch(NumberFormatException nfe){
+					freezerField.setText("Use a number.");
+				}
 			} else if (e.getSource() == openFridgeDoor){
 				refrigerator.openFridgeDoor();
 			} else if (e.getSource() == closeFridgeDoor){
@@ -158,46 +195,53 @@ public class GUI extends JFrame {
 	class Panel extends JPanel{
 		public Panel(){
 			setLayout(null);
-			
+			JLabel lblFileInfo = new JLabel("File Info");
+			lblFileInfo.setBounds(27, 13, 133, 14);
+			add(lblFileInfo);
+			fieldShowName = new JTextField();
+			fieldShowName.setText("Name of file");
+			fieldShowName.setBounds(170, 10, 86, 20);
+			add(fieldShowName);
+	
 			JLabel lblNewLabel = new JLabel("Room Temp");
-			lblNewLabel.setBounds(27, 27, 115, 14);
+			lblNewLabel.setBounds(27, 42, 115, 14);
 			add(lblNewLabel);
 			
 			JLabel lblNewLabel_1 = new JLabel("Desired Fridge Temp");
-			lblNewLabel_1.setBounds(27, 56, 133, 14);
+			lblNewLabel_1.setBounds(27, 71, 133, 14);
 			add(lblNewLabel_1);
 			
 			JLabel lblNewLabel_2 = new JLabel("Desired Freezer Temp");
-			lblNewLabel_2.setBounds(27, 84, 133, 14);
+			lblNewLabel_2.setBounds(27, 99, 133, 14);
 			add(lblNewLabel_2);
 			
 			setRoomTemp = new JButton("Set Room Temp");
 			setRoomTemp.addActionListener(listen);
-			setRoomTemp.setBounds(280, 23, 200, 23);
+			setRoomTemp.setBounds(280, 38, 200, 23);
 			add(setRoomTemp);
 			
 			setFridgeTemp = new JButton("Set Desired Fridge Temp");
 			setFridgeTemp.addActionListener(listen);
-			setFridgeTemp.setBounds(280, 52, 200, 23);
+			setFridgeTemp.setBounds(280, 67, 200, 23);
 			add(setFridgeTemp);
 			
 			setFreezerTemp = new JButton("Set Desired Freezer Temp");
 			setFreezerTemp.addActionListener(listen);
-			setFreezerTemp.setBounds(280, 80, 200, 23);
+			setFreezerTemp.setBounds(280, 95, 200, 23);
 			add(setFreezerTemp);
 
 			roomField = new JTextField();
-			roomField.setBounds(170, 24, 86, 20);
+			roomField.setBounds(170, 39, 86, 20);
 			add(roomField);
 			roomField.setColumns(10);
 			
 			fridgeField = new JTextField();
-			fridgeField.setBounds(170, 53, 86, 20);
+			fridgeField.setBounds(170, 68, 86, 20);
 			add(fridgeField);
 			fridgeField.setColumns(10);
 			
 			freezerField = new JTextField();
-			freezerField.setBounds(170, 81, 86, 20);
+			freezerField.setBounds(170, 96, 86, 20);
 			add(freezerField);
 			freezerField.setColumns(10);
 
@@ -250,8 +294,57 @@ public class GUI extends JFrame {
 			add(freezerCoolingLbl);
 		}
 	}
+
+	//Method to input the content of the chosen file
+	public String fileScan(File aFile){
+		String fileName = aFile.getName().replaceFirst("[.][^.]+$", "");
+		String whereFile = aFile.getParent();
+		//System.out.println(whereFile);
+		fieldShowName.setText(fileName);
+		BufferedReader input = null;
+		String oneLine;
+
+		//Open the input stream
+		try {
+			input = new BufferedReader(new FileReader(aFile));
+		} catch (FileNotFoundException e) {
+			fieldShowName.setText("File not found.");
+		}
+
+		//Read the stream
+		try {
+			while((oneLine = input.readLine()) != null){
+				content.add(oneLine);
+
+			}
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Unable to read file.", "No can do,  boss.", JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		} catch(NullPointerException npe){
+			JOptionPane.showMessageDialog(null, "That file threw a null pointer exception.", 
+					"Null Pointer", JOptionPane.ERROR_MESSAGE);
+			npe.printStackTrace();
+		}
+
+		//Close the input stream
+		try {
+			input.close();
+		} catch (IOException e) {
+			fieldShowName.setText("Can't close file.");
+			e.printStackTrace();
+		}
+		acceptFile();
+		return whereFile;
+	}
+	
+	public void acceptFile(){
+		ListIterator <String> input = content.listIterator();
+		while(input.hasNext()){
+			System.out.println(input.next());
+		}
+	}
 	
 	public static void main(String[] args) {
-		new GUI();
+		new GUI(new File(args[0]));
 	}
 }

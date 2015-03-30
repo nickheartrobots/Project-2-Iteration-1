@@ -15,8 +15,4 @@ public class Freezer extends RefrigeratorComponent {
 		return freezer;
 	}
 	
-	
-	public void clockTicked(){
-		
-	}
 }
