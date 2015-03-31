@@ -26,6 +26,10 @@ public class GUI extends JFrame {
 	public static final String FRIDGE_LIGHT_OFF = "Fridge Light <off>";
 	public static final String FREEZER_LIGHT_ON = "Freezer Light <on>";
 	public static final String FREEZER_LIGHT_OFF = "Freezer Light <off>";
+	public static final String FRIDGE_COOLING_ON = "Fridge Cool <on>";
+	public static final String FRIDGE_COOLING_OFF = "Fridge Cool <off>";
+	public static final String FREEZER_COOLING_ON = "Freezer Cool <on>";
+	public static final String FREEZER_COOLING_OFF = "Freezer Cool <off>";
 
 	private Refrigerator refrigerator;
 
@@ -62,6 +66,8 @@ public class GUI extends JFrame {
 
 	private Listen listen;
 
+
+
 	public GUI(File file){
 		refrigerator = Refrigerator.instance();
 		refrigerator.setGUI(this);
@@ -77,6 +83,7 @@ public class GUI extends JFrame {
 		pack();
 		setVisible(true);
 		fileScan(file);
+		refrigerator.setData(acceptFile());
 	}
 
 	private void centerGUI() {
@@ -100,18 +107,18 @@ public class GUI extends JFrame {
 					float t2 = Float.parseFloat(t1);
 					refrigerator.setRoomTemp(t2);
 					roomField.setText("Temp set.");
+					
 				}catch(NumberFormatException nfe){
 					roomField.setText("Use a number.");
 				}
-
 
 			} else if (e.getSource() == setFridgeTemp){
 				try{
 					String t1 = fridgeField.getText();
 					float t2 = Float.parseFloat(t1);
-
 					refrigerator.setFridgeTemp(t2);
 					fridgeField.setText("Temp set.");
+
 				}catch(NumberFormatException nfe){
 					fridgeField.setText("Use a number.");
 				}
@@ -299,7 +306,7 @@ public class GUI extends JFrame {
 	public String fileScan(File aFile){
 		String fileName = aFile.getName().replaceFirst("[.][^.]+$", "");
 		String whereFile = aFile.getParent();
-		//System.out.println(whereFile);
+	
 		fieldShowName.setText(fileName);
 		BufferedReader input = null;
 		String oneLine;
@@ -321,7 +328,7 @@ public class GUI extends JFrame {
 			JOptionPane.showMessageDialog(null, "Unable to read file.", "No can do,  boss.", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		} catch(NullPointerException npe){
-			JOptionPane.showMessageDialog(null, "That file threw a null pointer exception.", 
+			JOptionPane.showMessageDialog(null, "That file isn't there.", 
 					"Null Pointer", JOptionPane.ERROR_MESSAGE);
 			npe.printStackTrace();
 		}
@@ -337,11 +344,20 @@ public class GUI extends JFrame {
 		return whereFile;
 	}
 
-	public void acceptFile(){
+	public int[] acceptFile(){
 		ListIterator <String> input = content.listIterator();
+		int[] data = new int[14];
+		int i = 0;
 		while(input.hasNext()){
-			System.out.println(input.next());
+			data[i] = Integer.parseInt(input.next());
+			i++;
 		}
+		
+		//print to console so we know it's there.
+		for(int val:data){
+			System.out.println(val);
+		}
+		return data;
 	}
 
 	public static void main(String[] args) {
