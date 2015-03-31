@@ -77,6 +77,22 @@ public class Refrigerator {
 		gui.setFreezerLightLbl(gui.FREEZER_LIGHT_OFF);
 	}
 	
+	public void turnFridgeCoolOn(){
+		gui.setFridgeCoolingLbl(gui.FRIDGE_COOLING_ON);
+	}
+	
+	public void turnFridgeCoolOff(){
+		gui.setFridgeCoolingLbl(gui.FRIDGE_COOLING_OFF);
+	}
+	
+	public void turnFreezerCoolOn(){
+		gui.setFridgeCoolingLbl(gui.FREEZER_COOLING_ON);
+	}
+	
+	public void turnFreezerCoolOff(){
+		gui.setFridgeCoolingLbl(gui.FREEZER_COOLING_OFF);
+	}
+	
 	public void clockTicked(){
 		
 	}
