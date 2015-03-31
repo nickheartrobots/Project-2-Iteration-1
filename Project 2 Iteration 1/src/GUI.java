@@ -118,7 +118,7 @@ public class GUI extends JFrame {
 					float t2 = Float.parseFloat(t1);
 					refrigerator.setFridgeTemp(t2);
 					fridgeField.setText("Temp set.");
-
+					setFridgeTempLbl("Fridge Temp " + t1);
 				}catch(NumberFormatException nfe){
 					fridgeField.setText("Use a number.");
 				}
@@ -127,9 +127,10 @@ public class GUI extends JFrame {
 				try{
 					String t1 = freezerField.getText();
 					float t2 = Float.parseFloat(t1);
-
 					refrigerator.setFreezerTemp(t2);
 					freezerField.setText("Temp set.");
+					setFreezerTempLbl("Freezer Temp " + t1);
+					
 				}catch(NumberFormatException nfe){
 					freezerField.setText("Use a number.");
 				}
