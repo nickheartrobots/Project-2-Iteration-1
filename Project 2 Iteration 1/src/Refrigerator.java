@@ -12,7 +12,7 @@ public class Refrigerator {
 	int roomLow;
 	int roomHigh; 
 	int fridgeUp1DoorClosed;
-	int fridgeUp1DoorOpen; 
+	int fridgeUp1DoorOpen;  
 	int freezerUp1DoorClosed; 
 	int freezerUp1DoorOpen;
 	int tempDiffToStartCoolFridge;
