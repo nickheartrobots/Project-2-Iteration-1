@@ -21,7 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 
-public class GUI extends JFrame {
+public class Project2Iteration1 extends JFrame {
 	public static final String FRIDGE_LIGHT_ON = "Fridge Light <on>";
 	public static final String FRIDGE_LIGHT_OFF = "Fridge Light <off>";
 	public static final String FREEZER_LIGHT_ON = "Freezer Light <on>";
@@ -68,7 +68,7 @@ public class GUI extends JFrame {
 
 
 
-	public GUI(File file){
+	public Project2Iteration1(File file){
 		refrigerator = Refrigerator.instance();
 		refrigerator.setGUI(this);
 
@@ -365,9 +365,9 @@ public class GUI extends JFrame {
 
 	public static void main(String[] args) {
 		if(args.length > 0){
-			new GUI(new File(args[0]));
+			new Project2Iteration1(new File(args[0]));
 		}else{
-			new GUI(new File("input.txt"));
+			new Project2Iteration1(new File("input.txt"));
 		}
 	}
 }

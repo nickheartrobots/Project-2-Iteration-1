@@ -22,7 +22,7 @@ public class Refrigerator {
 
 
 	// reference back to the gui so this class can set the status labels
-	private GUI gui;
+	private Project2Iteration1 gui;
 
 	private Refrigerator(){
 		fridge = Fridge.instance();
@@ -40,7 +40,7 @@ public class Refrigerator {
 
 	// called explicitly by the gui because a reference can't be passed during
 	// construction.
-	public void setGUI(GUI gui){
+	public void setGUI(Project2Iteration1 gui){
 		this.gui = gui;
 	}
 
