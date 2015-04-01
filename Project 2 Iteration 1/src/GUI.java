@@ -107,7 +107,7 @@ public class GUI extends JFrame {
 					float t2 = Float.parseFloat(t1);
 					refrigerator.setRoomTemp(t2);
 					roomField.setText("Temp set.");
-					
+
 				}catch(NumberFormatException nfe){
 					roomField.setText("Use a number.");
 				}
@@ -117,8 +117,7 @@ public class GUI extends JFrame {
 					String t1 = fridgeField.getText();
 					float t2 = Float.parseFloat(t1);
 					refrigerator.setFridgeTemp(t2);
-					fridgeField.setText("Temp set.");
-					setFridgeTempLbl("Fridge Temp " + t1);
+
 				}catch(NumberFormatException nfe){
 					fridgeField.setText("Use a number.");
 				}
@@ -128,9 +127,7 @@ public class GUI extends JFrame {
 					String t1 = freezerField.getText();
 					float t2 = Float.parseFloat(t1);
 					refrigerator.setFreezerTemp(t2);
-					freezerField.setText("Temp set.");
-					setFreezerTempLbl("Freezer Temp " + t1);
-					
+
 				}catch(NumberFormatException nfe){
 					freezerField.setText("Use a number.");
 				}
@@ -145,7 +142,12 @@ public class GUI extends JFrame {
 			}
 		}
 	}
-
+	public void freezerFieldSetText(String text){
+		freezerField.setText(text);
+	}
+	public void fridgeFieldSetText(String text){
+		fridgeField.setText(text);
+	}
 	public String getFridgeCoolingLbl() {
 		return fridgeCoolingLbl.getText();
 	}
@@ -307,7 +309,7 @@ public class GUI extends JFrame {
 	public String fileScan(File aFile){
 		String fileName = aFile.getName().replaceFirst("[.][^.]+$", "");
 		String whereFile = aFile.getParent();
-	
+
 		fieldShowName.setText(fileName);
 		BufferedReader input = null;
 		String oneLine;
@@ -353,7 +355,7 @@ public class GUI extends JFrame {
 			data[i] = Integer.parseInt(input.next());
 			i++;
 		}
-		
+
 		//print to console so we know it's there.
 		for(int val:data){
 			System.out.println(val);
