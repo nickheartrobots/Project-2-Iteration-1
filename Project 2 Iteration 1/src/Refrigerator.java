@@ -1,6 +1,12 @@
-import java.io.ObjectInputStream.GetField;
 
-
+/**
+ * @author Nick Clarity Alicia Struble, Maya Gaforova
+ * Project 2 Iteration 1
+ * Apr 1, 2015
+ * 
+ * This is the Main Class for all of the Refrigerator Logic.  Implements
+ * Facade pattern and Singleton patter.
+ */
 public class Refrigerator {
 	private static Refrigerator refrigerator;
 	private static Fridge fridge;
@@ -11,6 +17,7 @@ public class Refrigerator {
 
 	private float roomTemp;
 	
+	// config file variables
 	private int fridgeLow; 
 	private int fridgeHigh; 
 	private int freezerLow;
@@ -29,12 +36,18 @@ public class Refrigerator {
 	// reference back to the gui so this class can set the status labels
 	private Project2Iteration1 gui;
 
+	/*
+	 * Private Constructor for Singleton pattern.
+	 */
 	private Refrigerator(){
 		fridge = Fridge.instance();
 		freezer = Freezer.instance();
-
 	}
 
+	/**
+	 * Returns the only instance of Refrigerator to adhere to the Singleton pattern.
+	 * @return Refrigerator
+	 */
 	public static Refrigerator instance(){
 		if (refrigerator == null){
 			refrigerator = new Refrigerator();
@@ -43,41 +56,30 @@ public class Refrigerator {
 		return refrigerator;
 	}
 
-	// called explicitly by the gui because a reference can't be passed during
-	// construction.
+	/*
+	 * Called by the GUI explicitly because reference can't be passed during
+	 * construction in the singleton pattern.
+	 */
 	public void init(Project2Iteration1 gui){
 		this.gui = gui;
 		
-		fridge.setTemp(roomTemp);
-		freezer.setTemp(roomTemp);
-		
-		// TODO init labels
+		//initiate labels to default values
 		gui.setFridgeLightLbl(Project2Iteration1.FRIDGE_LIGHT_OFF);
 		gui.setFreezerLightLbl(Project2Iteration1.FREEZER_LIGHT_OFF);
 	}
 
-	public void setFridgeTemp(float temp){
-		if(temp <= fridgeHigh && temp >= fridgeLow){
-			fridge.setTemp(temp);
-		}else{
-			gui.setErrorLblVisible(true);
-			gui.setErrorLbl("Temp outside of range. (" + fridgeLow + " - " + fridgeHigh + ")");
-		}
-	}
-
-	public void setFreezerTemp(float temp){
-		if(temp <= freezerHigh && temp >= freezerLow){
-			freezer.setTemp(temp);
-		}else{
-			gui.setErrorLblVisible(true);
-			gui.setErrorLbl("Temp outside of range. (" + freezerLow + " - " + freezerHigh + ")");
-		}
-	}
-
+	/**
+	 * Called by the GUI when the button is pressed.  Sets default temp values
+	 * to room temp based on 1) from Miscellaneous in the spec.
+	 * @param temp - Room temp
+	 */
 	public void setRoomTemp(float temp){
+		// verifies in range
 		if (temp <= roomHigh && temp >= roomLow){
-			// TODO why?
-//			roomTemp = temp;
+			fridge.setTemp(temp);
+			freezer.setTemp(temp);
+			
+			gui.setRoomFieldText("");
 			gui.setErrorLbl("");
 			gui.setErrorLblVisible(false);
 		} else {
@@ -86,26 +88,77 @@ public class Refrigerator {
 		}
 	}
 
+	/**
+	 * Called by the GUI when the button is pressed.  Sets the fridge's temp and
+	 * adjusts GUI labels.
+	 * @param temp
+	 */
+	public void setFridgeTemp(float temp){
+		// verifies in range
+		if(temp <= fridgeHigh && temp >= fridgeLow){
+			fridge.setTemp(temp);
+			gui.setFridgeFieldText("");
+			gui.setErrorLbl("");
+			gui.setErrorLblVisible(false);
+		}else{
+			gui.setErrorLblVisible(true);
+			gui.setErrorLbl("Temp outside of range. (" + fridgeLow + " - " + fridgeHigh + ")");
+		}
+	}
+
+	/**
+	 * Called by the GUI when the button is pressed.  Sets the freezer's temp and
+	 * adjusts GUI labels.
+	 * @param temp
+	 */
+	public void setFreezerTemp(float temp){
+		// verifies in range
+		if(temp <= freezerHigh && temp >= freezerLow){
+			freezer.setTemp(temp);
+			gui.setFreezerFieldText("");
+			gui.setErrorLbl("");
+			gui.setErrorLblVisible(false);
+		}else{
+			gui.setErrorLblVisible(true);
+			gui.setErrorLbl("Temp outside of range. (" + freezerLow + " - " + freezerHigh + ")");
+		}
+	}
+	
+	/**
+	 * Called by GUI when button is pressed.  Sets the fridge's door.  Updates GUI Labels.
+	 */
 	public void openFridgeDoor(){
 		fridge.setDoor(DOOR_OPENED);
 		gui.setFridgeLightLbl(Project2Iteration1.FRIDGE_LIGHT_ON);
 	}
 
+	/**
+	 * Called by GUI when button is pressed.  Sets the fridge's door.  Updates GUI Labels.
+	 */
 	public void closeFridgeDoor(){
 		fridge.setDoor(DOOR_CLOSED);
 		gui.setFridgeLightLbl(Project2Iteration1.FRIDGE_LIGHT_OFF);
 	}
 
+	/**
+	 * Called by GUI when button is pressed.  Sets the freezer's door.  Updates GUI Labels.
+	 */
 	public void openFreezerDoor(){
 		freezer.setDoor(DOOR_OPENED);
 		gui.setFreezerLightLbl(Project2Iteration1.FREEZER_LIGHT_ON);
 	}
 
+	/**
+	 * Called by GUI when button is pressed.  Sets the freezer's door.  Updates GUI Labels.
+	 */
 	public void closeFreezerDoor(){
 		freezer.setDoor(DOOR_CLOSED);
 		gui.setFreezerLightLbl(Project2Iteration1.FREEZER_LIGHT_OFF);
 	}
 
+	/*
+	 * Called by clockTicked().  Increments the fridge's temp by the right rate.
+	 */
 	private void raiseFridgeTemp(){
 		if(fridge.doorIsOpen()){
 			fridge.setTemp(fridge.getTemp() + ((float) 1/(float) fridgeUp1DoorOpen));
@@ -114,11 +167,17 @@ public class Refrigerator {
 		}
 	}
 
+	/*
+	 * Called by clockTicked().  Decrements the fridge's temp by the right rate.
+	 */
 	private void lowerFridgeTemp(){
 		fridge.setTemp(fridge.getTemp() - ((float) 1 / (float) minutesToCoolFridge1));
 		
 	}
 
+	/*
+	 * Called by clockTicked().  Increments the freezer's temp by the right rate.
+	 */
 	private void raiseFreezerTemp(){
 		if(freezer.doorIsOpen()){
 			freezer.setTemp(freezer.getTemp() + ((float) 1/(float) freezerUp1DoorOpen));
@@ -127,13 +186,26 @@ public class Refrigerator {
 		}		
 	}
 
+	/*
+	 * Called by clockTicked().  Decrements the freezer's temp by the right rate.
+	 */
 	private void lowerFreezerTemp(){
 		freezer.setTemp(freezer.getTemp() - ((float) 1 / (float) minutesToCoolFreezer1));
 	}
 	
+	/**
+	 * The heart beat of the program.
+	 * 
+	 * This method contains all the Logic of the state changes for both
+	 * fridge and freezer.
+	 * 
+	 * Does not implement the State Pattern as Spec.
+	 * 
+	 */
 	public void clockTicked(){
-		System.out.println("----Tick----");
+//		System.out.println("----Tick----");
 		
+		// If we are cooling or we are over the upper threshold.
 		if(fridge.coolerIsRunning() || fridge.getTemp() > fridgeHigh){
 			lowerFridgeTemp();
 			
@@ -142,6 +214,7 @@ public class Refrigerator {
 			}
 			gui.setFridgeCoolingLbl(Project2Iteration1.FRIDGE_COOLING_ON);
 		
+		// If we are not cooling or we are below the lower threshold.
 		} else if (!fridge.coolerIsRunning() || fridge.getTemp() < fridgeLow){
 			raiseFridgeTemp();
 			
@@ -150,10 +223,12 @@ public class Refrigerator {
 			}
 			gui.setFridgeCoolingLbl(Project2Iteration1.FRIDGE_COOLING_OFF);
 		}
-
+		
+		// Update the GUI labels
 		gui.setFridgeTempLbl(Project2Iteration1.FRIDGE_TEMP +
 				" <" + String.format("%2.3f", fridge.getTemp()) + ">");
 		
+		// If we are cooling or we are over the upper threshold.
 		if(freezer.coolerIsRunning() || freezer.getTemp() > freezerHigh){
 			lowerFreezerTemp();
 			
@@ -162,6 +237,7 @@ public class Refrigerator {
 			}
 			gui.setFreezerCoolingLbl(Project2Iteration1.FREEZER_COOLING_ON);
 			
+			// If we are not cooling or we are below the lower threshold.
 		} else if (!freezer.coolerIsRunning() || freezer.getTemp() < freezerLow){
 			raiseFreezerTemp();
 			
@@ -171,10 +247,15 @@ public class Refrigerator {
 			gui.setFreezerCoolingLbl(Project2Iteration1.FREEZER_COOLING_OFF);
 		}
 	
+		// Update the GUI labels
 		gui.setFreezerTempLbl(Project2Iteration1.FREEZER_TEMP +
 				" <" + String.format("%2.3f", freezer.getTemp()) + ">");
 	}
 
+	/**
+	 * Method called by GUI to initialized default/config variables.
+	 * @param data
+	 */
 	public void setData(int[] data){
 		if(data.length == 14){
 			fridgeLow = data[0]; 

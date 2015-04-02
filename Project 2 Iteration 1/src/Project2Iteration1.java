@@ -20,6 +20,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ * @author Nick Clarity Alicia Struble, Maya Gaforova
+ * Project 2 Iteration 1
+ * Apr 1, 2015
+ * 
+ * GUI for Project 2 Iteration 1.  Class is titled "Project2Iteration1" because
+ * it contains the main method and it will be run from the command line with 
+ * that title.
+ */
 public class Project2Iteration1 extends JFrame {
 	private Refrigerator refrigerator;
 
@@ -67,8 +76,11 @@ public class Project2Iteration1 extends JFrame {
 
 	private Listen listen;
 
+	/**
+	 * Constructor with a File param.
+	 * @param file is the config File passed in as a commandline arg.
+	 */
 	public Project2Iteration1(File file){
-
 		listen = new Listen();
 		add(new Panel());
 
@@ -82,11 +94,18 @@ public class Project2Iteration1 extends JFrame {
 
 		fileScan(file);
 		refrigerator = Refrigerator.instance();
+		
+		//setData() and init() because cant pass args to contructor of a singleton
 		refrigerator.setData(acceptFile());
 		refrigerator.init(this);
+		
+		//start the clock.
 		new Clock();
 	}
 
+	/*
+	 * Centers the GUI on he screen instead of it appear at the top left corner.
+	 */
 	private void centerGUI() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int width = (int) screenSize.getWidth();
@@ -99,10 +118,19 @@ public class Project2Iteration1 extends JFrame {
 				- (frameHeight / 2));
 	}
 
+	/**
+	 * @author Nick Clarity
+	 * Project 2 Iteration 1
+	 * Apr 1, 2015
+	 * 
+	 * Action Listener class for all the Button presses.
+	 */
 	private class Listen implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource() == setRoomTemp){
+				
+				// parse temps to send to Refrigerator
 				try{
 					String t1 = roomField.getText();
 					float t2 = Float.parseFloat(t1);
@@ -117,6 +145,7 @@ public class Project2Iteration1 extends JFrame {
 					setErrorLbl("Room Temp must be a number.");
 				}
 
+				// parse temps to send to Refrigerator
 			} else if (e.getSource() == setFridgeTemp){
 				try{
 					String t1 = fridgeField.getText();
@@ -133,6 +162,7 @@ public class Project2Iteration1 extends JFrame {
 					setErrorLbl("Fridge Temp must be a number.");
 				}
 
+				// parse temps to send to Refrigerator
 			} else if (e.getSource() == setFreezerTemp){
 				try{
 					String t1 = freezerField.getText();
@@ -160,78 +190,173 @@ public class Project2Iteration1 extends JFrame {
 		}
 	}
 	
+	/**
+	 * Getter for Fridge Cooling Label text
+	 * @return String
+	 */
 	public String getFridgeCoolingLbl() {
 		return fridgeCoolingLbl.getText();
 	}
 
+	/**
+	 * Setter for Fridge Cooling Label text
+	 * @param fridgeCoolingLbl - String
+	 */
 	public void setFridgeCoolingLbl(String fridgeCoolingLbl) {
 		this.fridgeCoolingLbl.setText(fridgeCoolingLbl);
 		repaint();
 	}
 
+	/**
+	 * Getter for Fridge Temp Label text
+	 * @return String
+	 */
 	public String getFridgeTempLbl() {
 		return fridgeTempLbl.getText();
 	}
 
+	/**
+	 * Setter for Fridge Temp Label text
+	 * @param fridgeTempLbl - String
+	 */
 	public void setFridgeTempLbl(String fridgeTempLbl) {
 		this.fridgeTempLbl.setText(fridgeTempLbl);
 		repaint();
 	}
 
+	/**
+	 * Getter for Fridge Light Label text
+	 * @return String
+	 */
 	public String getFridgeLightLbl() {
 		return fridgeLightLbl.getText();
 	}
 
+	/**
+	 * Setter for Fridge Light Label text
+	 * @param fridgeLightLbl - String
+	 */
 	public void setFridgeLightLbl(String fridgeLightLbl) {
 		this.fridgeLightLbl.setText(fridgeLightLbl);
 		repaint();
 	}
 
+	/**
+	 * Getter for Freezer Light Label text
+	 * @return String
+	 */
 	public String getFreezerLightLbl() {
 		return freezerLightLbl.getText();
 	}
 
+	/**
+	 * Setter for Freezer Light Label text
+	 * @param freezerLightLbl - String
+	 */
 	public void setFreezerLightLbl(String freezerLightLbl) {
 		this.freezerLightLbl.setText(freezerLightLbl);
 		repaint();
 	}
 
+	/**
+	 * Getter for Freezer Temp Label text
+	 * @return String
+	 */
 	public String getFreezerTempLbl() {
 		return freezerTempLbl.getText();
 	}
 
+	/**
+	 * Setter for Freezer Temp Label
+	 * @param freezerTempLbl - String
+	 */
 	public void setFreezerTempLbl(String freezerTempLbl) {
 		this.freezerTempLbl.setText(freezerTempLbl);
 		repaint();
 	}
 
+	/**
+	 * Getter for Freezer Cooling Label text
+	 * @return String
+	 */
 	public String getFreezerCoolingLbl() {
 		return freezerCoolingLbl.getText();
 	}
 
+	/**
+	 * Setter for Freezer Cooling Label text
+	 * @param freezerCoolingLbl - String
+	 */
 	public void setFreezerCoolingLbl(String freezerCoolingLbl) {
 		this.freezerCoolingLbl.setText(freezerCoolingLbl);
 		repaint();
 	}
 	
+	/**
+	 * Getter for Error Label text
+	 * @return String
+	 */
 	public String getErrorLbl(){
 		return errorLbl.getText();
 	}
 	
+	/**
+	 * Setter for Error Label text
+	 * @param string - String
+	 */
 	public void setErrorLbl(String string){
 		this.errorLbl.setText(string);
 		repaint();
 	}
 	
+	/**
+	 * Setter for Error Label visibility
+	 * @param bool - boolean
+	 */
 	public void setErrorLblVisible(boolean bool){
 		errorLbl.setVisible(bool);
 	}
 	
+	/**
+	 * Getter for Room Field text
+	 * @return String
+	 */
 	public String getRoomFieldText(){
 		return roomField.getText();
 	}
 
-	class Panel extends JPanel{
+	/**
+	 * Setter for Room Field text
+	 * @param string - String
+	 */
+	public void setRoomFieldText(String string){
+		roomField.setText(string);
+	}
+	
+	/**
+	 * Setter for Fridge Field text
+	 * @param string - String
+	 */
+	public void setFridgeFieldText(String string){
+		fridgeField.setText(string);
+	}
+	
+	/**
+	 * Setter for Freezer Field text
+	 * @param string - String
+	 */
+	public void setFreezerFieldText(String string){
+		freezerField.setText(string);
+	}
+	
+	/**
+	 * @author Nick Clarity
+	 * Project 2 Iteration 1
+	 * Apr 1, 2015
+	 * 
+	 * Instantiates, Aligns and Adds all components to the screen.
+	 */
+	private class Panel extends JPanel{
 		public Panel(){
 			setLayout(null);
 
@@ -333,8 +458,13 @@ public class Project2Iteration1 extends JFrame {
 		}
 	}
 
-	//Method to input the content of the chosen file
-	public String fileScan(File aFile){
+	/*
+	 * Method to input the content of the config File.
+	 * 
+	 * @param aFile - The config file for the Refrigerator System
+	 * @return the location of the file.
+	 */
+	private String fileScan(File aFile){
 		String fileName = aFile.getName().replaceFirst("[.][^.]+$", "");
 		String whereFile = aFile.getParent();
 
@@ -373,7 +503,12 @@ public class Project2Iteration1 extends JFrame {
 		return whereFile;
 	}
 
-	public int[] acceptFile(){
+	/*
+	 * If a file has been successfully read, this method parses variables from the text.
+	 * 
+	 * @return an array of ints containing all the config variables.
+	 */
+	private int[] acceptFile(){
 		ListIterator <String> input = content.listIterator();
 		int[] data = new int[14];
 		int i = 0;
@@ -389,11 +524,17 @@ public class Project2Iteration1 extends JFrame {
 		return data;
 	}
 
+	/**
+	 * Main method
+	 * 
+	 * If no args are passed in the default config file is used.
+	 * 
+	 * @param args - path to config file.
+	 */
 	public static void main(String[] args) {
 		if(args.length > 0){
 			new Project2Iteration1(new File(args[0]));
 		} else {
-			// TODO popup
 			new Project2Iteration1(new File("input.txt"));
 		}
 	}

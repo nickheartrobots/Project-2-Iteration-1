@@ -16,6 +16,10 @@
  *            The authors do not make any claims regarding the correctness of
  *            the code in this module and are not responsible for any loss or
  *            damage resulting from its use.
+ *            
+ *            
+ * @author Nick Clarity Alicia Struble, Maya Gaforova
+ * 		Modified for use in ICS372 Project 2 Iteration 1           
  */
 public class Clock implements Runnable {
 	private static Refrigerator refrigerator;
