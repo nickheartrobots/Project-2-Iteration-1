@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -11,7 +12,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -19,7 +19,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.filechooser.FileFilter;
 
 public class Project2Iteration1 extends JFrame {
 	private Refrigerator refrigerator;
@@ -64,12 +63,11 @@ public class Project2Iteration1 extends JFrame {
 	private JLabel freezerLightLbl;
 	private JLabel freezerTempLbl;
 	private JLabel freezerCoolingLbl;
+	private JLabel errorLbl;
 
 	private Listen listen;
 
 	public Project2Iteration1(File file){
-		refrigerator = Refrigerator.instance();
-		refrigerator.setGUI(this);
 
 		listen = new Listen();
 		add(new Panel());
@@ -83,7 +81,9 @@ public class Project2Iteration1 extends JFrame {
 		setVisible(true);
 
 		fileScan(file);
+		refrigerator = Refrigerator.instance();
 		refrigerator.setData(acceptFile());
+		refrigerator.init(this);
 		new Clock();
 	}
 
@@ -106,31 +106,47 @@ public class Project2Iteration1 extends JFrame {
 				try{
 					String t1 = roomField.getText();
 					float t2 = Float.parseFloat(t1);
-					refrigerator.setRoomTemp(t2);
-					roomField.setText("Temp set.");
+					setErrorLbl("");
+					setErrorLblVisible(false);
 
+					refrigerator.setRoomTemp(t2);
 				}catch(NumberFormatException nfe){
-					roomField.setText("Use a number.");
+					roomField.setText("");
+					
+					setErrorLblVisible(true);
+					setErrorLbl("Room Temp must be a number.");
 				}
 
 			} else if (e.getSource() == setFridgeTemp){
 				try{
 					String t1 = fridgeField.getText();
 					float t2 = Float.parseFloat(t1);
-					refrigerator.setFridgeTemp(t2);
+					
+					setErrorLbl("");
+					setErrorLblVisible(false);
 
+					refrigerator.setFridgeTemp(t2);
 				}catch(NumberFormatException nfe){
-					fridgeField.setText("Use a number.");
+					fridgeField.setText("");
+					
+					setErrorLblVisible(true);
+					setErrorLbl("Fridge Temp must be a number.");
 				}
 
 			} else if (e.getSource() == setFreezerTemp){
 				try{
 					String t1 = freezerField.getText();
 					float t2 = Float.parseFloat(t1);
-					refrigerator.setFreezerTemp(t2);
 
+					setErrorLbl("");
+					setErrorLblVisible(false);
+					
+					refrigerator.setFreezerTemp(t2);
 				}catch(NumberFormatException nfe){
-					freezerField.setText("Use a number.");
+					freezerField.setText("");
+					
+					setErrorLblVisible(true);
+					setErrorLbl("Freezer Temp must be a number.");
 				}
 			} else if (e.getSource() == openFridgeDoor){
 				refrigerator.openFridgeDoor();
@@ -143,12 +159,7 @@ public class Project2Iteration1 extends JFrame {
 			}
 		}
 	}
-	public void freezerFieldSetText(String text){
-		freezerField.setText(text);
-	}
-	public void fridgeFieldSetText(String text){
-		fridgeField.setText(text);
-	}
+	
 	public String getFridgeCoolingLbl() {
 		return fridgeCoolingLbl.getText();
 	}
@@ -201,6 +212,23 @@ public class Project2Iteration1 extends JFrame {
 	public void setFreezerCoolingLbl(String freezerCoolingLbl) {
 		this.freezerCoolingLbl.setText(freezerCoolingLbl);
 		repaint();
+	}
+	
+	public String getErrorLbl(){
+		return errorLbl.getText();
+	}
+	
+	public void setErrorLbl(String string){
+		this.errorLbl.setText(string);
+		repaint();
+	}
+	
+	public void setErrorLblVisible(boolean bool){
+		errorLbl.setVisible(bool);
+	}
+	
+	public String getRoomFieldText(){
+		return roomField.getText();
 	}
 
 	class Panel extends JPanel{
@@ -296,6 +324,12 @@ public class Project2Iteration1 extends JFrame {
 			freezerCoolingLbl = new JLabel("Freezer <cooling/idle>");
 			freezerCoolingLbl.setBounds(256, 282, 150, 14);
 			add(freezerCoolingLbl);
+			
+			errorLbl = new JLabel();
+			errorLbl.setBounds(20, 310, 400, 14);
+			errorLbl.setForeground(Color.red);
+			errorLbl.setVisible(false);
+			add(errorLbl);
 		}
 	}
 
@@ -318,7 +352,6 @@ public class Project2Iteration1 extends JFrame {
 		try {
 			while((oneLine = input.readLine()) != null){
 				content.add(oneLine);
-
 			}
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Unable to read file.", "No can do,  boss.", JOptionPane.ERROR_MESSAGE);
