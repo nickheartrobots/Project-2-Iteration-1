@@ -22,17 +22,19 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 
 public class Project2Iteration1 extends JFrame {
-	public static final String FRIDGE_LIGHT_ON = "Fridge Light <on>";
-	public static final String FRIDGE_LIGHT_OFF = "Fridge Light <off>";
-	public static final String FREEZER_LIGHT_ON = "Freezer Light <on>";
-	public static final String FREEZER_LIGHT_OFF = "Freezer Light <off>";
-	public static final String FRIDGE_COOLING_ON = "Fridge Cool <on>";
-	public static final String FRIDGE_COOLING_OFF = "Fridge Cool <off>";
-	public static final String FREEZER_COOLING_ON = "Freezer Cool <on>";
-	public static final String FREEZER_COOLING_OFF = "Freezer Cool <off>";
-
 	private Refrigerator refrigerator;
 
+	public static final String FRIDGE_LIGHT_ON = "Fridge light <on>";
+	public static final String FRIDGE_LIGHT_OFF = "Fridge light <off>";
+	public static final String FREEZER_LIGHT_ON = "Freezer light <on>";
+	public static final String FREEZER_LIGHT_OFF = "Freezer light <off>";
+	public static final String FRIDGE_COOLING_ON = "Fridge <cooling>";
+	public static final String FRIDGE_COOLING_OFF = "Fridge <idle>";
+	public static final String FREEZER_COOLING_ON = "Freezer <cooling>";
+	public static final String FREEZER_COOLING_OFF = "Freezer <idle>";
+	public static final String FRIDGE_TEMP = "Fridge temp";
+	public static final String FREEZER_TEMP = "Freezer temp";
+	
 	//Input variables
 	private JFileChooser fileOpen;
 	private File txtFile;
@@ -52,7 +54,6 @@ public class Project2Iteration1 extends JFrame {
 	private JButton setFridgeTemp;
 	private JButton setFreezerTemp;
 
-	private JTextField fieldShowName;
 	private JTextField roomField;
 	private JTextField fridgeField;
 	private JTextField freezerField;
@@ -65,8 +66,6 @@ public class Project2Iteration1 extends JFrame {
 	private JLabel freezerCoolingLbl;
 
 	private Listen listen;
-
-
 
 	public Project2Iteration1(File file){
 		refrigerator = Refrigerator.instance();
@@ -82,8 +81,10 @@ public class Project2Iteration1 extends JFrame {
 		setPreferredSize(new Dimension(frameWidth, frameHeight));
 		pack();
 		setVisible(true);
+
 		fileScan(file);
 		refrigerator.setData(acceptFile());
+		new Clock();
 	}
 
 	private void centerGUI() {
@@ -205,53 +206,46 @@ public class Project2Iteration1 extends JFrame {
 	class Panel extends JPanel{
 		public Panel(){
 			setLayout(null);
-			JLabel lblFileInfo = new JLabel("File Info");
-			lblFileInfo.setBounds(27, 13, 133, 14);
-			add(lblFileInfo);
-			fieldShowName = new JTextField();
-			fieldShowName.setText("Name of file");
-			fieldShowName.setBounds(170, 10, 86, 20);
-			add(fieldShowName);
 
-			JLabel lblNewLabel = new JLabel("Room Temp");
-			lblNewLabel.setBounds(27, 42, 115, 14);
+			JLabel lblNewLabel = new JLabel("Room Temp:");
+			lblNewLabel.setBounds(27, 29, 115, 14);
 			add(lblNewLabel);
 
-			JLabel lblNewLabel_1 = new JLabel("Desired Fridge Temp");
-			lblNewLabel_1.setBounds(27, 71, 133, 14);
+			JLabel lblNewLabel_1 = new JLabel("Desired Fridge Temp:");
+			lblNewLabel_1.setBounds(27, 56, 133, 14);
 			add(lblNewLabel_1);
 
-			JLabel lblNewLabel_2 = new JLabel("Desired Freezer Temp");
-			lblNewLabel_2.setBounds(27, 99, 133, 14);
+			JLabel lblNewLabel_2 = new JLabel("Desired Freezer Temp:");
+			lblNewLabel_2.setBounds(27, 84, 133, 14);
 			add(lblNewLabel_2);
 
 			setRoomTemp = new JButton("Set Room Temp");
 			setRoomTemp.addActionListener(listen);
-			setRoomTemp.setBounds(280, 38, 200, 23);
+			setRoomTemp.setBounds(280, 23, 200, 23);
 			add(setRoomTemp);
 
 			setFridgeTemp = new JButton("Set Desired Fridge Temp");
 			setFridgeTemp.addActionListener(listen);
-			setFridgeTemp.setBounds(280, 67, 200, 23);
+			setFridgeTemp.setBounds(280, 52, 200, 23);
 			add(setFridgeTemp);
 
 			setFreezerTemp = new JButton("Set Desired Freezer Temp");
 			setFreezerTemp.addActionListener(listen);
-			setFreezerTemp.setBounds(280, 95, 200, 23);
+			setFreezerTemp.setBounds(280, 80, 200, 23);
 			add(setFreezerTemp);
 
 			roomField = new JTextField();
-			roomField.setBounds(170, 39, 86, 20);
+			roomField.setBounds(190, 24, 50, 20);
 			add(roomField);
 			roomField.setColumns(10);
 
 			fridgeField = new JTextField();
-			fridgeField.setBounds(170, 68, 86, 20);
+			fridgeField.setBounds(190, 53, 50, 20);
 			add(fridgeField);
 			fridgeField.setColumns(10);
 
 			freezerField = new JTextField();
-			freezerField.setBounds(170, 96, 86, 20);
+			freezerField.setBounds(190, 81, 50, 20);
 			add(freezerField);
 			freezerField.setColumns(10);
 
@@ -280,27 +274,27 @@ public class Project2Iteration1 extends JFrame {
 			add(lblNewLabel_3);
 
 			fridgeLightLbl = new JLabel("Fridge Light <on/off>");
-			fridgeLightLbl.setBounds(49, 232, 130, 14);
+			fridgeLightLbl.setBounds(49, 232, 150, 14);
 			add(fridgeLightLbl);
 
 			fridgeTempLbl = new JLabel("Fridge temp <nn>");
-			fridgeTempLbl.setBounds(49, 257, 130, 14);
+			fridgeTempLbl.setBounds(49, 257, 150, 14);
 			add(fridgeTempLbl);
 
 			fridgeCoolingLbl = new JLabel("Fridge <cooling/idle>");
-			fridgeCoolingLbl.setBounds(49, 282, 130, 14);
+			fridgeCoolingLbl.setBounds(49, 282, 150, 14);
 			add(fridgeCoolingLbl);
 
 			freezerLightLbl = new JLabel("Freezer Light <on/off>");
-			freezerLightLbl.setBounds(256, 232, 130, 14);
+			freezerLightLbl.setBounds(256, 232, 150, 14);
 			add(freezerLightLbl);
 
 			freezerTempLbl = new JLabel("Freezer Temp <nn>");
-			freezerTempLbl.setBounds(256, 257, 130, 14);
+			freezerTempLbl.setBounds(256, 257, 150, 14);
 			add(freezerTempLbl);
 
 			freezerCoolingLbl = new JLabel("Freezer <cooling/idle>");
-			freezerCoolingLbl.setBounds(256, 282, 130, 14);
+			freezerCoolingLbl.setBounds(256, 282, 150, 14);
 			add(freezerCoolingLbl);
 		}
 	}
@@ -310,7 +304,6 @@ public class Project2Iteration1 extends JFrame {
 		String fileName = aFile.getName().replaceFirst("[.][^.]+$", "");
 		String whereFile = aFile.getParent();
 
-		fieldShowName.setText(fileName);
 		BufferedReader input = null;
 		String oneLine;
 
@@ -318,7 +311,7 @@ public class Project2Iteration1 extends JFrame {
 		try {
 			input = new BufferedReader(new FileReader(aFile));
 		} catch (FileNotFoundException e) {
-			fieldShowName.setText("File not found.");
+			//TODO output
 		}
 
 		//Read the stream
@@ -340,7 +333,7 @@ public class Project2Iteration1 extends JFrame {
 		try {
 			input.close();
 		} catch (IOException e) {
-			fieldShowName.setText("Can't close file.");
+			// TODO output
 			e.printStackTrace();
 		}
 		acceptFile();
@@ -366,7 +359,8 @@ public class Project2Iteration1 extends JFrame {
 	public static void main(String[] args) {
 		if(args.length > 0){
 			new Project2Iteration1(new File(args[0]));
-		}else{
+		} else {
+			// TODO popup
 			new Project2Iteration1(new File("input.txt"));
 		}
 	}
