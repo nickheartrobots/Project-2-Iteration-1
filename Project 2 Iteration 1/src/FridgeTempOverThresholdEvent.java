@@ -10,7 +10,7 @@ public class FridgeTempOverThresholdEvent extends RefrigeratorEvent{
 		@Override
 		public void connectToListener(RefrigeratorEventListener listener) {
 			try{
-				((FridgeTempOverThresholdListener) listener).fridgeTempOverThreshold(this);
+				((FridgeTempOverThresholdListener) listener).processEvent(this);
 			}catch(ClassCastException cce){
 				JOptionPane.showMessageDialog(null, "Can't cast event to class FridgeTempOverThresholdListener.", 
 						"Class Cast Exception", JOptionPane.ERROR_MESSAGE);
