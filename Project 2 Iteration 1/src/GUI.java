@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -23,15 +24,19 @@ import javax.swing.JTextField;
 /**
  * @author Nick Clarity Alicia Struble, Maya Gaforova
  * Project 2 Iteration 1
- * Apr 1, 2015
+ * Apr 15, 2015
  * 
- * GUI for Project 2 Iteration 1.  Class is titled "Project2Iteration1" because
+ * GUI for Project 2 Iteration 2.  Class is titled "Project2Iteration1" because
  * it contains the main method and it will be run from the command line with 
  * that title.
  */
-public class Project2Iteration1 extends JFrame {
-	private Refrigerator refrigerator;
-
+public class GUI extends RefrigeratorDisplay {
+	//private Refrigerator refrigerator;
+	private RefrigeratorFrame frame;
+	private RefrigeratorContext context;
+	
+	private int[] data = new int[14];
+	
 	public static final String FRIDGE_LIGHT_ON = "Fridge light <on>";
 	public static final String FRIDGE_LIGHT_OFF = "Fridge light <off>";
 	public static final String FREEZER_LIGHT_ON = "Freezer light <on>";
@@ -80,43 +85,32 @@ public class Project2Iteration1 extends JFrame {
 	 * Constructor with a File param.
 	 * @param file is the config File passed in as a commandline arg.
 	 */
-	public Project2Iteration1(File file){
-		listen = new Listen();
-		add(new Panel());
-
-		centerGUI();
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setLocation(this.defaultLocation);
-		setTitle("Refrigerator Dashboard");
-		setPreferredSize(new Dimension(frameWidth, frameHeight));
-		pack();
-		setVisible(true);
-
+	public GUI(File file){
 		fileScan(file);
-		refrigerator = Refrigerator.instance();
+		listen = new Listen();
+		frame = new RefrigeratorFrame();
+		context = RefrigeratorContext.instance();
+		frame.add(new Panel());
+
+		frame.centerGUI();
+		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+		frame.setLocation(this.defaultLocation);
+		frame.setTitle("Refrigerator Dashboard");
+		frame.setPreferredSize(new Dimension(frameWidth, frameHeight));
+		frame.pack();
+		frame.setVisible(true);
+
 		
-		//setData() and init() because cant pass args to contructor of a singleton
-		refrigerator.setData(acceptFile());
-		refrigerator.init(this);
+		//refrigerator = Refrigerator.instance();
 		
+		//setData() and init() because can't pass args to contructor of a singleton
+		//refrigerator.init(this);
+		
+		context.setData(data);
 		//start the clock.
-		new Clock();
 	}
 
-	/*
-	 * Centers the GUI on he screen instead of it appear at the top left corner.
-	 */
-	private void centerGUI() {
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int width = (int) screenSize.getWidth();
-		int height = (int) screenSize.getHeight();
-
-		width /= 2;
-		height /= 2;
-
-		defaultLocation = new Point(width - (frameWidth / 2), height
-				- (frameHeight / 2));
-	}
+	
 
 	/**
 	 * @author Nick Clarity
@@ -137,7 +131,7 @@ public class Project2Iteration1 extends JFrame {
 					setErrorLbl("");
 					setErrorLblVisible(false);
 
-					refrigerator.setRoomTemp(t2);
+					//refrigerator.setRoomTemp(t2);
 				}catch(NumberFormatException nfe){
 					roomField.setText("");
 					
@@ -154,7 +148,7 @@ public class Project2Iteration1 extends JFrame {
 					setErrorLbl("");
 					setErrorLblVisible(false);
 
-					refrigerator.setFridgeTemp(t2);
+					//refrigerator.setFridgeTemp(t2);
 				}catch(NumberFormatException nfe){
 					fridgeField.setText("");
 					
@@ -171,7 +165,7 @@ public class Project2Iteration1 extends JFrame {
 					setErrorLbl("");
 					setErrorLblVisible(false);
 					
-					refrigerator.setFreezerTemp(t2);
+					//refrigerator.setFreezerTemp(t2);
 				}catch(NumberFormatException nfe){
 					freezerField.setText("");
 					
@@ -179,15 +173,34 @@ public class Project2Iteration1 extends JFrame {
 					setErrorLbl("Freezer Temp must be a number.");
 				}
 			} else if (e.getSource() == openFridgeDoor){
-				refrigerator.openFridgeDoor();
+				//refrigerator.openFridgeDoor();
 			} else if (e.getSource() == closeFridgeDoor){
-				refrigerator.closeFridgeDoor();
+				//refrigerator.closeFridgeDoor();
 			} else if (e.getSource() == openFreezerDoor){
-				refrigerator.openFreezerDoor();
+				//refrigerator.openFreezerDoor();
 			} else if (e.getSource() == closeFreezerDoor){
-				refrigerator.closeFreezerDoor();
+				//refrigerator.closeFreezerDoor();
 			}
 		}
+	}
+	
+	private class RefrigeratorFrame extends JFrame{
+		
+		/*
+		 * Centers the GUI on he screen instead of it appear at the top left corner.
+		 */
+		private void centerGUI() {
+			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			int width = (int) screenSize.getWidth();
+			int height = (int) screenSize.getHeight();
+
+			width /= 2;
+			height /= 2;
+
+			defaultLocation = new Point(width - (frameWidth / 2), height
+					- (frameHeight / 2));
+		}
+		
 	}
 	
 	/**
@@ -199,12 +212,21 @@ public class Project2Iteration1 extends JFrame {
 	}
 
 	/**
-	 * Setter for Fridge Cooling Label text
-	 * @param fridgeCoolingLbl - String
+	 * Sets Fridge Cooling Label to ON
+	 * 
 	 */
-	public void setFridgeCoolingLbl(String fridgeCoolingLbl) {
-		this.fridgeCoolingLbl.setText(fridgeCoolingLbl);
-		repaint();
+	public void turnFridgeCoolerOn() {
+		this.fridgeCoolingLbl.setText(FRIDGE_COOLING_ON);
+		frame.repaint();
+	}
+	
+	/**
+	 * Sets Fridge Cooling Label to OFF
+	 * 
+	 */
+	public void turnFridgeCoolerOff() {
+		this.fridgeCoolingLbl.setText(FRIDGE_COOLING_OFF);
+		frame.repaint();
 	}
 
 	/**
@@ -216,14 +238,32 @@ public class Project2Iteration1 extends JFrame {
 	}
 
 	/**
-	 * Setter for Fridge Temp Label text
-	 * @param fridgeTempLbl - String
+	 * Sets Fridge light label to OFF
+	 * 
 	 */
-	public void setFridgeTempLbl(String fridgeTempLbl) {
-		this.fridgeTempLbl.setText(fridgeTempLbl);
-		repaint();
+	public void turnFridgeLightOff() {
+		this.fridgeTempLbl.setText(FRIDGE_LIGHT_OFF);
+		frame.repaint();
 	}
+	
+	/**
+	 * Sets Fridge light label to ON 
+	 */
+	public void turnFridgeLightOn() {
+		this.fridgeTempLbl.setText(FRIDGE_LIGHT_ON);
+		frame.repaint();
+	}
+	
+	/**
+	 * Sets label for Fridge temp, so the simulated temperature is visible
+	 * @param string
+	 */
 
+	public void setFridgeTempLbl(String string) {
+		fridgeTempLbl.setText(string);
+		frame.repaint();
+	}
+	
 	/**
 	 * Getter for Fridge Light Label text
 	 * @return String
@@ -232,14 +272,6 @@ public class Project2Iteration1 extends JFrame {
 		return fridgeLightLbl.getText();
 	}
 
-	/**
-	 * Setter for Fridge Light Label text
-	 * @param fridgeLightLbl - String
-	 */
-	public void setFridgeLightLbl(String fridgeLightLbl) {
-		this.fridgeLightLbl.setText(fridgeLightLbl);
-		repaint();
-	}
 
 	/**
 	 * Getter for Freezer Light Label text
@@ -247,15 +279,6 @@ public class Project2Iteration1 extends JFrame {
 	 */
 	public String getFreezerLightLbl() {
 		return freezerLightLbl.getText();
-	}
-
-	/**
-	 * Setter for Freezer Light Label text
-	 * @param freezerLightLbl - String
-	 */
-	public void setFreezerLightLbl(String freezerLightLbl) {
-		this.freezerLightLbl.setText(freezerLightLbl);
-		repaint();
 	}
 
 	/**
@@ -272,7 +295,7 @@ public class Project2Iteration1 extends JFrame {
 	 */
 	public void setFreezerTempLbl(String freezerTempLbl) {
 		this.freezerTempLbl.setText(freezerTempLbl);
-		repaint();
+		frame.repaint();
 	}
 
 	/**
@@ -281,15 +304,6 @@ public class Project2Iteration1 extends JFrame {
 	 */
 	public String getFreezerCoolingLbl() {
 		return freezerCoolingLbl.getText();
-	}
-
-	/**
-	 * Setter for Freezer Cooling Label text
-	 * @param freezerCoolingLbl - String
-	 */
-	public void setFreezerCoolingLbl(String freezerCoolingLbl) {
-		this.freezerCoolingLbl.setText(freezerCoolingLbl);
-		repaint();
 	}
 	
 	/**
@@ -306,7 +320,7 @@ public class Project2Iteration1 extends JFrame {
 	 */
 	public void setErrorLbl(String string){
 		this.errorLbl.setText(string);
-		repaint();
+		frame.repaint();
 	}
 	
 	/**
@@ -347,6 +361,46 @@ public class Project2Iteration1 extends JFrame {
 	 */
 	public void setFreezerFieldText(String string){
 		freezerField.setText(string);
+	}
+	
+	/**
+	 * Sets Freezer Light Label to ON
+	 */
+	
+	@Override
+	public void turnFreezerLightOn() {
+		freezerLightLbl.setText(FREEZER_LIGHT_ON);
+		
+	}
+	
+	/**
+	 * Sets Freezer Light Label to OFF
+	 */
+
+	@Override
+	public void turnFreezerLightOff() {
+		freezerLightLbl.setText(FREEZER_LIGHT_OFF);
+		
+	}
+
+	/**
+	 * Sets Freezer Cooling Label to OFF
+	 */
+	
+	@Override
+	public void turnFreezerCoolerOn() {
+		freezerCoolingLbl.setText(FREEZER_COOLING_ON);
+		
+	}
+	
+	/**
+	 * Sets Freezer Cooling Label to OFF
+	 */
+
+	@Override
+	public void turnFreezerCoolerOff() {
+		freezerCoolingLbl.setText(FREEZER_COOLING_OFF);
+		
 	}
 	
 	/**
@@ -402,7 +456,7 @@ public class Project2Iteration1 extends JFrame {
 			add(freezerField);
 			freezerField.setColumns(10);
 
-			openFridgeDoor = new JButton("Open Fridge Door");
+			openFridgeDoor = new FridgeDoorOpenButton("Open Fridge Door");
 			openFridgeDoor.addActionListener(listen);
 			openFridgeDoor.setBounds(69, 125, 150, 23);
 			add(openFridgeDoor);
@@ -412,7 +466,7 @@ public class Project2Iteration1 extends JFrame {
 			openFreezerDoor.setBounds(69, 159, 150, 23);
 			add(openFreezerDoor);
 
-			closeFridgeDoor = new JButton("Close Fridge Door");
+			closeFridgeDoor = new FridgeDoorCloseButton("Close Fridge Door");
 			closeFridgeDoor.addActionListener(listen);
 			closeFridgeDoor.setBounds(263, 125, 150, 23);
 			add(closeFridgeDoor);
@@ -475,7 +529,8 @@ public class Project2Iteration1 extends JFrame {
 		try {
 			input = new BufferedReader(new FileReader(aFile));
 		} catch (FileNotFoundException e) {
-			//TODO output
+			JOptionPane.showMessageDialog(null, "Couldn't find file.", "File not found.", JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
 		}
 
 		//Read the stream
@@ -484,7 +539,7 @@ public class Project2Iteration1 extends JFrame {
 				content.add(oneLine);
 			}
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Unable to read file.", "No can do,  boss.", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Unable to read file.", "IO Exception", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		} catch(NullPointerException npe){
 			JOptionPane.showMessageDialog(null, "That file isn't there.", 
@@ -496,7 +551,8 @@ public class Project2Iteration1 extends JFrame {
 		try {
 			input.close();
 		} catch (IOException e) {
-			// TODO output
+			JOptionPane.showMessageDialog(null, "Can't close output.", 
+					"IO Exception", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
 		acceptFile();
@@ -508,9 +564,8 @@ public class Project2Iteration1 extends JFrame {
 	 * 
 	 * @return an array of ints containing all the config variables.
 	 */
-	private int[] acceptFile(){
+	private void acceptFile(){
 		ListIterator <String> input = content.listIterator();
-		int[] data = new int[14];
 		int i = 0;
 		while(input.hasNext()){
 			data[i] = Integer.parseInt(input.next());
@@ -521,9 +576,8 @@ public class Project2Iteration1 extends JFrame {
 		for(int val:data){
 			System.out.println(val);
 		}
-		return data;
 	}
-
+	
 	/**
 	 * Main method
 	 * 
@@ -533,9 +587,13 @@ public class Project2Iteration1 extends JFrame {
 	 */
 	public static void main(String[] args) {
 		if(args.length > 0){
-			new Project2Iteration1(new File(args[0]));
+			new GUI(new File(args[0]));
 		} else {
-			new Project2Iteration1(new File("input.txt"));
+			new GUI(new File("input.txt"));
 		}
 	}
+
+
+
+	
 }
