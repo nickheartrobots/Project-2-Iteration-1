@@ -1,5 +1,5 @@
 
-public interface FridgeDoorCloseListener {
+public interface FridgeDoorCloseListener extends RefrigeratorEventListener{
 	public void processEvent(FridgeDoorCloseEvent event);
 
 }
