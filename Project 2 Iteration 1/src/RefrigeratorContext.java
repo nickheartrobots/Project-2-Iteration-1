@@ -95,6 +95,26 @@ public class RefrigeratorContext implements Observer{
 	}
 	
 	/**
+	 * Called by the GUI when the button is pressed.  Sets default temp values
+	 * to room temp based on 1) from Miscellaneous in the spec.
+	 * @param temp - Room temp
+	 */
+	public void setRoomTemp(float temp){
+		// verifies in range
+		if (temp <= roomHigh && temp >= roomLow){
+//			fridge.setTemp(temp);
+//			freezer.setTemp(temp);
+			
+			((GUI) refrigeratorDisplay).setRoomFieldText("");
+			((GUI) refrigeratorDisplay).setErrorLbl("");
+			((GUI) refrigeratorDisplay).setErrorLblVisible(false);
+		} else {
+			((GUI) refrigeratorDisplay).setErrorLblVisible(true);
+			((GUI) refrigeratorDisplay).setErrorLbl("Temp outside of range. (" + roomLow + " - " + roomHigh + ")");
+		}
+	}
+	
+	/**
 	 * Method called by GUI to initialized default/config variables.
 	 * @param data
 	 */

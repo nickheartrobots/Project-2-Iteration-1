@@ -34,9 +34,9 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 	//private Refrigerator refrigerator;
 	private RefrigeratorFrame frame;
 	private RefrigeratorContext context;
-	
+
 	private int[] data = new int[14];
-	
+
 	public static final String FRIDGE_LIGHT_ON = "Fridge light <on>";
 	public static final String FRIDGE_LIGHT_OFF = "Fridge light <off>";
 	public static final String FREEZER_LIGHT_ON = "Freezer light <on>";
@@ -47,7 +47,7 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 	public static final String FREEZER_COOLING_OFF = "Freezer <idle>";
 	public static final String FRIDGE_TEMP = "Fridge temp";
 	public static final String FREEZER_TEMP = "Freezer temp";
-	
+
 	//Input variables
 	private JFileChooser fileOpen;
 	private File txtFile;
@@ -100,17 +100,17 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 		frame.pack();
 		frame.setVisible(true);
 
-		
+
 		//refrigerator = Refrigerator.instance();
-		
+
 		//setData() and init() because can't pass args to contructor of a singleton
 		//refrigerator.init(this);
-		
+
 		context.setData(data);
 		//start the clock.
 	}
 
-	
+
 
 	/**
 	 * @author Nick Clarity
@@ -119,64 +119,52 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 	 * 
 	 * Action Listener class for all the Button presses.
 	 */
-//	private class Listen implements ActionListener{
-//		@Override
-//		public void actionPerformed(ActionEvent e) {
-//			if(e.getSource() == setRoomTemp){
-//				
-//				// parse temps to send to Refrigerator
-//				try{
-//					String t1 = roomField.getText();
-//					float t2 = Float.parseFloat(t1);
-//					setErrorLbl("");
-//					setErrorLblVisible(false);
-//
-//					//refrigerator.setRoomTemp(t2);
-//				}catch(NumberFormatException nfe){
-//					roomField.setText("");
-//					
-//					setErrorLblVisible(true);
-//					setErrorLbl("Room Temp must be a number.");
-//				}
-//
-//				// parse temps to send to Refrigerator
-//			} else if (e.getSource() == setFridgeTemp){
-//				try{
-//					String t1 = fridgeField.getText();
-//					float t2 = Float.parseFloat(t1);
-//					
-//					setErrorLbl("");
-//					setErrorLblVisible(false);
-//
-//					//refrigerator.setFridgeTemp(t2);
-//				}catch(NumberFormatException nfe){
-//					fridgeField.setText("");
-//					
-//					setErrorLblVisible(true);
-//					setErrorLbl("Fridge Temp must be a number.");
-//				}
-//
-//				// parse temps to send to Refrigerator
-//			} else if (e.getSource() == setFreezerTemp){
-//				try{
-//					String t1 = freezerField.getText();
-//					float t2 = Float.parseFloat(t1);
-//
-//					setErrorLbl("");
-//					setErrorLblVisible(false);
-//					
-//					//refrigerator.setFreezerTemp(t2);
-//				}catch(NumberFormatException nfe){
-//					freezerField.setText("");
-//					
-//					setErrorLblVisible(true);
-//					setErrorLbl("Freezer Temp must be a number.");
-//				}
-//		}
-//	}
-	
+	//	private class Listen implements ActionListener{
+	//		@Override
+	//		public void actionPerformed(ActionEvent e) {
+	//			if(e.getSource() == setRoomTemp){
+	//				
+	//				// parse temps to send to Refrigerator
+	//				
+	//
+	//				// parse temps to send to Refrigerator
+	//			} else if (e.getSource() == setFridgeTemp){
+	//				try{
+	//					String t1 = fridgeField.getText();
+	//					float t2 = Float.parseFloat(t1);
+	//					
+	//					setErrorLbl("");
+	//					setErrorLblVisible(false);
+	//
+	//					//refrigerator.setFridgeTemp(t2);
+	//				}catch(NumberFormatException nfe){
+	//					fridgeField.setText("");
+	//					
+	//					setErrorLblVisible(true);
+	//					setErrorLbl("Fridge Temp must be a number.");
+	//				}
+	//
+	//				// parse temps to send to Refrigerator
+	//			} else if (e.getSource() == setFreezerTemp){
+	//				try{
+	//					String t1 = freezerField.getText();
+	//					float t2 = Float.parseFloat(t1);
+	//
+	//					setErrorLbl("");
+	//					setErrorLblVisible(false);
+	//					
+	//					//refrigerator.setFreezerTemp(t2);
+	//				}catch(NumberFormatException nfe){
+	//					freezerField.setText("");
+	//					
+	//					setErrorLblVisible(true);
+	//					setErrorLbl("Freezer Temp must be a number.");
+	//				}
+	//		}
+	//	}
+
 	private class RefrigeratorFrame extends JFrame{
-		
+
 		/*
 		 * Centers the GUI on he screen instead of it appear at the top left corner.
 		 */
@@ -191,9 +179,9 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 			defaultLocation = new Point(width - (frameWidth / 2), height
 					- (frameHeight / 2));
 		}
-		
+
 	}
-	
+
 	/**
 	 * Getter for Fridge Cooling Label text
 	 * @return String
@@ -210,7 +198,7 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 		this.fridgeCoolingLbl.setText(FRIDGE_COOLING_ON);
 		frame.repaint();
 	}
-	
+
 	/**
 	 * Sets Fridge Cooling Label to OFF
 	 * 
@@ -236,7 +224,7 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 		this.fridgeTempLbl.setText(FRIDGE_LIGHT_OFF);
 		frame.repaint();
 	}
-	
+
 	/**
 	 * Sets Fridge light label to ON 
 	 */
@@ -244,7 +232,7 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 		this.fridgeTempLbl.setText(FRIDGE_LIGHT_ON);
 		frame.repaint();
 	}
-	
+
 	/**
 	 * Sets label for Fridge temp, so the simulated temperature is visible
 	 * @param string
@@ -254,7 +242,7 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 		fridgeTempLbl.setText(string);
 		frame.repaint();
 	}
-	
+
 	/**
 	 * Getter for Fridge Light Label text
 	 * @return String
@@ -296,7 +284,7 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 	public String getFreezerCoolingLbl() {
 		return freezerCoolingLbl.getText();
 	}
-	
+
 	/**
 	 * Getter for Error Label text
 	 * @return String
@@ -304,7 +292,7 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 	public String getErrorLbl(){
 		return errorLbl.getText();
 	}
-	
+
 	/**
 	 * Setter for Error Label text
 	 * @param string - String
@@ -313,7 +301,7 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 		this.errorLbl.setText(string);
 		frame.repaint();
 	}
-	
+
 	/**
 	 * Setter for Error Label visibility
 	 * @param bool - boolean
@@ -321,7 +309,7 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 	public void setErrorLblVisible(boolean bool){
 		errorLbl.setVisible(bool);
 	}
-	
+
 	/**
 	 * Getter for Room Field text
 	 * @return String
@@ -337,7 +325,7 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 	public void setRoomFieldText(String string){
 		roomField.setText(string);
 	}
-	
+
 	/**
 	 * Setter for Fridge Field text
 	 * @param string - String
@@ -345,7 +333,7 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 	public void setFridgeFieldText(String string){
 		fridgeField.setText(string);
 	}
-	
+
 	/**
 	 * Setter for Freezer Field text
 	 * @param string - String
@@ -353,17 +341,17 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 	public void setFreezerFieldText(String string){
 		freezerField.setText(string);
 	}
-	
+
 	/**
 	 * Sets Freezer Light Label to ON
 	 */
-	
+
 	@Override
 	public void turnFreezerLightOn() {
 		freezerLightLbl.setText(FREEZER_LIGHT_ON);
-		
+
 	}
-	
+
 	/**
 	 * Sets Freezer Light Label to OFF
 	 */
@@ -371,19 +359,19 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 	@Override
 	public void turnFreezerLightOff() {
 		freezerLightLbl.setText(FREEZER_LIGHT_OFF);
-		
+
 	}
 
 	/**
 	 * Sets Freezer Cooling Label to OFF
 	 */
-	
+
 	@Override
 	public void turnFreezerCoolerOn() {
 		freezerCoolingLbl.setText(FREEZER_COOLING_ON);
-		
+
 	}
-	
+
 	/**
 	 * Sets Freezer Cooling Label to OFF
 	 */
@@ -391,9 +379,9 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 	@Override
 	public void turnFreezerCoolerOff() {
 		freezerCoolingLbl.setText(FREEZER_COOLING_OFF);
-		
+
 	}
-	
+
 	/**
 	 * @author Nick Clarity
 	 * Project 2 Iteration 1
@@ -418,17 +406,67 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 			add(lblNewLabel_2);
 
 			setRoomTemp = new JButton("Set Room Temp");
-			setRoomTemp.addActionListener(GUI.this);
+			setRoomTemp.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent event) {
+					try{
+						String t1 = roomField.getText();
+						float t2 = Float.parseFloat(t1);
+						setErrorLbl("");
+						setErrorLblVisible(false);
+
+						context.setRoomTemp(t2);
+					}catch(NumberFormatException nfe){
+						roomField.setText("");
+
+						setErrorLblVisible(true);
+						setErrorLbl("Room Temp must be a number.");
+					}
+
+				}
+			});
 			setRoomTemp.setBounds(280, 23, 200, 23);
 			add(setRoomTemp);
 
 			setFridgeTemp = new JButton("Set Desired Fridge Temp");
-			setFridgeTemp.addActionListener(GUI.this);
+			setFridgeTemp.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent event) {
+					try{
+						String t1 = fridgeField.getText();
+						float t2 = Float.parseFloat(t1);
+
+						setErrorLbl("");
+						setErrorLblVisible(false);
+
+						//context.setFridgeTemp(t2);
+					}catch(NumberFormatException nfe){
+						fridgeField.setText("");
+
+						setErrorLblVisible(true);
+						setErrorLbl("Fridge Temp must be a number.");
+					}		        	
+				}});
 			setFridgeTemp.setBounds(280, 52, 200, 23);
 			add(setFridgeTemp);
 
 			setFreezerTemp = new JButton("Set Desired Freezer Temp");
-			setFreezerTemp.addActionListener(GUI.this);
+			setFreezerTemp.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent event) {
+					try{
+						String t1 = freezerField.getText();
+						float t2 = Float.parseFloat(t1);
+
+						setErrorLbl("");
+						setErrorLblVisible(false);
+
+						//context.setFreezerTemp(t2);
+					}catch(NumberFormatException nfe){
+						freezerField.setText("");
+
+						setErrorLblVisible(true);
+						setErrorLbl("Freezer Temp must be a number.");
+					}
+				}
+			});
 			setFreezerTemp.setBounds(280, 80, 200, 23);
 			add(setFreezerTemp);
 
@@ -494,7 +532,7 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 			freezerCoolingLbl = new JLabel("Freezer <cooling/idle>");
 			freezerCoolingLbl.setBounds(256, 282, 150, 14);
 			add(freezerCoolingLbl);
-			
+
 			errorLbl = new JLabel();
 			errorLbl.setBounds(20, 310, 400, 14);
 			errorLbl.setForeground(Color.red);
@@ -568,7 +606,7 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 			System.out.println(val);
 		}
 	}
-	
+
 	/**
 	 * Main method
 	 * 
@@ -587,10 +625,10 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		((GUIButton) event.getSource()).inform(context, this);
-		
+
 	}
 
 
 
-	
+
 }
