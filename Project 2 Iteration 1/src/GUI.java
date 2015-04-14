@@ -30,7 +30,7 @@ import javax.swing.JTextField;
  * it contains the main method and it will be run from the command line with 
  * that title.
  */
-public class GUI extends RefrigeratorDisplay {
+public class GUI extends RefrigeratorDisplay implements ActionListener {
 	//private Refrigerator refrigerator;
 	private RefrigeratorFrame frame;
 	private RefrigeratorContext context;
@@ -591,6 +591,12 @@ public class GUI extends RefrigeratorDisplay {
 		} else {
 			new GUI(new File("input.txt"));
 		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 
