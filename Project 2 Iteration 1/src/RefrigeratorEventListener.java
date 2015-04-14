@@ -1,4 +1,8 @@
+import java.util.EventListener;
 
-public interface RefrigeratorEventListener {
+
+public interface RefrigeratorEventListener extends EventListener{
+	
+	
 
 }

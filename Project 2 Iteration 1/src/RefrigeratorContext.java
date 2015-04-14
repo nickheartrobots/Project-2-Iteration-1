@@ -6,6 +6,8 @@ public class RefrigeratorContext implements Observer{
 	private static RefrigeratorDisplay refrigeratorDisplay;
 	private RefrigeratorState currentState;
 	private static RefrigeratorContext instance;
+	private static Fridge fridge;
+	private static Freezer freezer;
 
 	
 	private static final boolean DOOR_OPENED = true;
@@ -34,6 +36,7 @@ public class RefrigeratorContext implements Observer{
 	 */
 	private RefrigeratorContext() {
 		instance = this;
+		Clock.instance().addObserver(instance);
 		refrigeratorDisplay = GUI.instance();
 		currentState = FridgeDoorClosedCoolerOff.instance();
 
@@ -90,7 +93,54 @@ public class RefrigeratorContext implements Observer{
 	
 	@Override
 	public void update(Observable arg0, Object arg1) {
+		System.out.println("----Tick----");
 		
+//		// If we are cooling or we are over the upper threshold.
+//		if(fridge.coolerIsRunning() || fridge.getTemp() > fridgeHigh){
+//			lowerFridgeTemp();
+//			
+//			if(Math.abs(fridge.getTemp() - fridgeLow) < tempDiffToStartCoolFridge){
+//				currentState.processEvent(new FridgeTempUnderThresholdEvent(instance));
+//			}
+//			
+//		
+//		// If we are not cooling or we are below the lower threshold.
+//		} else if (!fridge.coolerIsRunning() || fridge.getTemp() < fridgeLow){
+//			raiseFridgeTemp();
+//			
+//			if(Math.abs(fridge.getTemp() - fridgeHigh) < tempDiffToStartCoolFridge){
+//				fridge.setCooler(true);
+//			}
+//			gui.turnFridgeCoolerOff();
+//		}
+//		
+//		// Update the GUI labels
+//		gui.setFridgeTempLbl(GUI.FRIDGE_TEMP +
+//				" <" + String.format("%2.3f", fridge.getTemp()) + ">");
+//		
+//		// If we are cooling or we are over the upper threshold.
+//		if(freezer.coolerIsRunning() || freezer.getTemp() > freezerHigh){
+//			lowerFreezerTemp();
+//			
+//			if(Math.abs(freezer.getTemp() - freezerLow) < tempDifftoStartCoolFreezer){
+//				freezer.setCooler(false);
+//			}
+//			gui.turnFreezerCoolerOn();
+//			
+//			// If we are not cooling or we are below the lower threshold.
+//		} else if (!freezer.coolerIsRunning() || freezer.getTemp() < freezerLow){
+//			raiseFreezerTemp();
+//			
+//			if(Math.abs(freezer.getTemp() - freezerHigh) < tempDifftoStartCoolFreezer){
+//				freezer.setCooler(true);
+//			}
+//			gui.turnFreezerCoolerOff();
+//		}
+//	
+//		// Update the GUI labels
+//		gui.setFreezerTempLbl(GUI.FREEZER_TEMP +
+//				" <" + String.format("%2.3f", freezer.getTemp()) + ">");
+//		
 		
 	}
 	
@@ -102,9 +152,8 @@ public class RefrigeratorContext implements Observer{
 	public void setRoomTemp(float temp){
 		// verifies in range
 		if (temp <= roomHigh && temp >= roomLow){
-//			fridge.setTemp(temp);
-//			freezer.setTemp(temp);
-			
+			fridge.setTemp(temp);
+			freezer.setTemp(temp);
 			((GUI) refrigeratorDisplay).setRoomFieldText("");
 			((GUI) refrigeratorDisplay).setErrorLbl("");
 			((GUI) refrigeratorDisplay).setErrorLblVisible(false);

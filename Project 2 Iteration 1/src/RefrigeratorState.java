@@ -23,6 +23,7 @@ public abstract class RefrigeratorState {
 	 */
 	public abstract void leave();
 
+
 	
 	
 	

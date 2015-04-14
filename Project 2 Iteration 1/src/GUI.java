@@ -31,7 +31,7 @@ import javax.swing.JTextField;
  * that title.
  */
 public class GUI extends RefrigeratorDisplay implements ActionListener {
-	//private Refrigerator refrigerator;
+	
 	private RefrigeratorFrame frame;
 	private RefrigeratorContext context;
 
