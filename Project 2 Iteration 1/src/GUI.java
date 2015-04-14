@@ -79,7 +79,7 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 	private JLabel freezerCoolingLbl;
 	private JLabel errorLbl;
 
-	private Listen listen;
+	//private Listen listen;
 
 	/**
 	 * Constructor with a File param.
@@ -87,7 +87,7 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 	 */
 	public GUI(File file){
 		fileScan(file);
-		listen = new Listen();
+		//listen = new Listen();
 		frame = new RefrigeratorFrame();
 		context = RefrigeratorContext.instance();
 		frame.add(new Panel());
@@ -119,70 +119,61 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 	 * 
 	 * Action Listener class for all the Button presses.
 	 */
-	private class Listen implements ActionListener{
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if(e.getSource() == setRoomTemp){
-				
-				// parse temps to send to Refrigerator
-				try{
-					String t1 = roomField.getText();
-					float t2 = Float.parseFloat(t1);
-					setErrorLbl("");
-					setErrorLblVisible(false);
-
-					//refrigerator.setRoomTemp(t2);
-				}catch(NumberFormatException nfe){
-					roomField.setText("");
-					
-					setErrorLblVisible(true);
-					setErrorLbl("Room Temp must be a number.");
-				}
-
-				// parse temps to send to Refrigerator
-			} else if (e.getSource() == setFridgeTemp){
-				try{
-					String t1 = fridgeField.getText();
-					float t2 = Float.parseFloat(t1);
-					
-					setErrorLbl("");
-					setErrorLblVisible(false);
-
-					//refrigerator.setFridgeTemp(t2);
-				}catch(NumberFormatException nfe){
-					fridgeField.setText("");
-					
-					setErrorLblVisible(true);
-					setErrorLbl("Fridge Temp must be a number.");
-				}
-
-				// parse temps to send to Refrigerator
-			} else if (e.getSource() == setFreezerTemp){
-				try{
-					String t1 = freezerField.getText();
-					float t2 = Float.parseFloat(t1);
-
-					setErrorLbl("");
-					setErrorLblVisible(false);
-					
-					//refrigerator.setFreezerTemp(t2);
-				}catch(NumberFormatException nfe){
-					freezerField.setText("");
-					
-					setErrorLblVisible(true);
-					setErrorLbl("Freezer Temp must be a number.");
-				}
-			} else if (e.getSource() == openFridgeDoor){
-				//refrigerator.openFridgeDoor();
-			} else if (e.getSource() == closeFridgeDoor){
-				//refrigerator.closeFridgeDoor();
-			} else if (e.getSource() == openFreezerDoor){
-				//refrigerator.openFreezerDoor();
-			} else if (e.getSource() == closeFreezerDoor){
-				//refrigerator.closeFreezerDoor();
-			}
-		}
-	}
+//	private class Listen implements ActionListener{
+//		@Override
+//		public void actionPerformed(ActionEvent e) {
+//			if(e.getSource() == setRoomTemp){
+//				
+//				// parse temps to send to Refrigerator
+//				try{
+//					String t1 = roomField.getText();
+//					float t2 = Float.parseFloat(t1);
+//					setErrorLbl("");
+//					setErrorLblVisible(false);
+//
+//					//refrigerator.setRoomTemp(t2);
+//				}catch(NumberFormatException nfe){
+//					roomField.setText("");
+//					
+//					setErrorLblVisible(true);
+//					setErrorLbl("Room Temp must be a number.");
+//				}
+//
+//				// parse temps to send to Refrigerator
+//			} else if (e.getSource() == setFridgeTemp){
+//				try{
+//					String t1 = fridgeField.getText();
+//					float t2 = Float.parseFloat(t1);
+//					
+//					setErrorLbl("");
+//					setErrorLblVisible(false);
+//
+//					//refrigerator.setFridgeTemp(t2);
+//				}catch(NumberFormatException nfe){
+//					fridgeField.setText("");
+//					
+//					setErrorLblVisible(true);
+//					setErrorLbl("Fridge Temp must be a number.");
+//				}
+//
+//				// parse temps to send to Refrigerator
+//			} else if (e.getSource() == setFreezerTemp){
+//				try{
+//					String t1 = freezerField.getText();
+//					float t2 = Float.parseFloat(t1);
+//
+//					setErrorLbl("");
+//					setErrorLblVisible(false);
+//					
+//					//refrigerator.setFreezerTemp(t2);
+//				}catch(NumberFormatException nfe){
+//					freezerField.setText("");
+//					
+//					setErrorLblVisible(true);
+//					setErrorLbl("Freezer Temp must be a number.");
+//				}
+//		}
+//	}
 	
 	private class RefrigeratorFrame extends JFrame{
 		
@@ -427,17 +418,17 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 			add(lblNewLabel_2);
 
 			setRoomTemp = new JButton("Set Room Temp");
-			setRoomTemp.addActionListener(listen);
+			setRoomTemp.addActionListener(GUI.this);
 			setRoomTemp.setBounds(280, 23, 200, 23);
 			add(setRoomTemp);
 
 			setFridgeTemp = new JButton("Set Desired Fridge Temp");
-			setFridgeTemp.addActionListener(listen);
+			setFridgeTemp.addActionListener(GUI.this);
 			setFridgeTemp.setBounds(280, 52, 200, 23);
 			add(setFridgeTemp);
 
 			setFreezerTemp = new JButton("Set Desired Freezer Temp");
-			setFreezerTemp.addActionListener(listen);
+			setFreezerTemp.addActionListener(GUI.this);
 			setFreezerTemp.setBounds(280, 80, 200, 23);
 			add(setFreezerTemp);
 
@@ -457,22 +448,22 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 			freezerField.setColumns(10);
 
 			openFridgeDoor = new FridgeDoorOpenButton("Open Fridge Door");
-			openFridgeDoor.addActionListener(listen);
+			openFridgeDoor.addActionListener(GUI.this);
 			openFridgeDoor.setBounds(69, 125, 150, 23);
 			add(openFridgeDoor);
 
 			openFreezerDoor = new JButton("Open Freezer Door");
-			openFreezerDoor.addActionListener(listen);
+			openFreezerDoor.addActionListener(GUI.this);
 			openFreezerDoor.setBounds(69, 159, 150, 23);
 			add(openFreezerDoor);
 
 			closeFridgeDoor = new FridgeDoorCloseButton("Close Fridge Door");
-			closeFridgeDoor.addActionListener(listen);
+			closeFridgeDoor.addActionListener(GUI.this);
 			closeFridgeDoor.setBounds(263, 125, 150, 23);
 			add(closeFridgeDoor);
 
 			closeFreezerDoor = new JButton("Close Freezer Door");
-			closeFreezerDoor.addActionListener(listen);
+			closeFreezerDoor.addActionListener(GUI.this);
 			closeFreezerDoor.setBounds(263, 159, 150, 23);
 			add(closeFreezerDoor);
 
