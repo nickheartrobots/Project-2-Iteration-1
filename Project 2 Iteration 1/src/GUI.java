@@ -594,8 +594,8 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
+	public void actionPerformed(ActionEvent event) {
+		((GUIButton) event.getSource()).inform(context, this);
 		
 	}
 
