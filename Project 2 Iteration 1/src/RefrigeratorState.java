@@ -3,6 +3,12 @@ public abstract class RefrigeratorState {
 	
 	protected static RefrigeratorContext context;
 	protected static RefrigeratorDisplay display;
+	protected static int fridgeLow; 
+	protected static int fridgeHigh; 
+	protected static int fridgeUp1DoorClosed;
+	protected static int fridgeUp1DoorOpen;  
+	protected static int tempDiffToStartCoolFridge;
+	protected static int minutesToCoolFridge1;
 
 	/**
 	 * Initializes the context and display
@@ -10,6 +16,13 @@ public abstract class RefrigeratorState {
 	protected RefrigeratorState() {
 		context = RefrigeratorContext.instance();
 		display = context.getDisplay();
+		int[] fridgeData = context.getFridgeData();
+		fridgeLow = fridgeData[0];
+		fridgeHigh = fridgeData[1];
+		fridgeUp1DoorClosed = fridgeData[2];
+		fridgeUp1DoorOpen = fridgeData[3];
+		tempDiffToStartCoolFridge = fridgeData[4];
+		minutesToCoolFridge1 = fridgeData[5];
 	}
 	
 	/**

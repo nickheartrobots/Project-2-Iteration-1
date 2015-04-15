@@ -1,5 +1,6 @@
 
-public class FridgeDoorOpenCoolerOff extends RefrigeratorState implements FridgeDoorCloseListener, FridgeTempOverThresholdListener{
+public class FridgeDoorOpenCoolerOff extends RefrigeratorState implements 
+	FridgeDoorCloseListener, FridgeTempOverThresholdListener, ClockTickedListener{
 
 	private static FridgeDoorOpenCoolerOff instance;
 	
@@ -37,6 +38,12 @@ public class FridgeDoorOpenCoolerOff extends RefrigeratorState implements Fridge
 
 	@Override
 	public void leave() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void processEvent(ClockTickedEvent event) {
 		// TODO Auto-generated method stub
 		
 	}

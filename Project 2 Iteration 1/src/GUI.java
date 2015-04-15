@@ -87,7 +87,7 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 	 */
 	public GUI(File file){
 		fileScan(file);
-		//listen = new Listen();
+
 		frame = new RefrigeratorFrame();
 		context = RefrigeratorContext.instance();
 		frame.add(new Panel());
@@ -99,9 +99,6 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 		frame.setPreferredSize(new Dimension(frameWidth, frameHeight));
 		frame.pack();
 		frame.setVisible(true);
-
-
-		//refrigerator = Refrigerator.instance();
 
 		//setData() and init() because can't pass args to contructor of a singleton
 		//refrigerator.init(this);
@@ -239,7 +236,7 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 	 */
 
 	public void setFridgeTempLbl(String string) {
-		fridgeTempLbl.setText(string);
+		fridgeTempLbl.setText("xxxxx");
 		frame.repaint();
 	}
 
@@ -437,7 +434,7 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 						setErrorLbl("");
 						setErrorLblVisible(false);
 
-						//context.setFridgeTemp(t2);
+						context.setFridgeTemp(t2);
 					}catch(NumberFormatException nfe){
 						fridgeField.setText("");
 

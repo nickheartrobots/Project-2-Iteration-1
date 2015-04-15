@@ -12,8 +12,6 @@ public class FridgeDoorCloseEvent extends RefrigeratorEvent{
 		try{
 			((FridgeDoorCloseListener) listener).processEvent(this);
 		}catch(ClassCastException cce){
-			JOptionPane.showMessageDialog(null, "Can't cast event to class FridgeDoorCloseListener.", 
-					"Class Cast Exception", JOptionPane.ERROR_MESSAGE);
 			cce.printStackTrace();
 		}
 		

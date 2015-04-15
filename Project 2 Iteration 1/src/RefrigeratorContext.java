@@ -6,30 +6,26 @@ public class RefrigeratorContext implements Observer{
 	private static RefrigeratorDisplay refrigeratorDisplay;
 	private RefrigeratorState currentState;
 	private static RefrigeratorContext instance;
-	private static Fridge fridge;
-	private static Freezer freezer;
-
-	
-	private static final boolean DOOR_OPENED = true;
-	private static final boolean DOOR_CLOSED = false;
 
 	private float roomTemp;
+	private float fridgeTemp;
+	private float freezerTemp;
+	
+	private int[] fridgeData = new int[6];;
+	private int[] freezerData = new int[6];
 	
 	// config file variables
-	private int fridgeLow; 
-	private int fridgeHigh; 
+
 	private int freezerLow;
 	private int freezerHigh; 
 	private int roomLow;
 	private int roomHigh; 
-	private int fridgeUp1DoorClosed;
-	private int fridgeUp1DoorOpen;  
 	private int freezerUp1DoorClosed; 
 	private int freezerUp1DoorOpen;
-	private int tempDiffToStartCoolFridge;
 	private int tempDifftoStartCoolFreezer;
-	private int minutesToCoolFridge1;
 	private int minutesToCoolFreezer1;
+	
+	
 
 	/**
 	 * Make it a singleton
@@ -60,6 +56,9 @@ public class RefrigeratorContext implements Observer{
 	 */
 	public void initialize() {
 		instance.changeCurrentState(FridgeDoorClosedCoolerOff.instance());
+		currentState.run();
+		fridgeTemp = (roomHigh + roomLow)/2;
+		freezerTemp = roomLow/2;
 	}
 
 	/**
@@ -91,28 +90,27 @@ public class RefrigeratorContext implements Observer{
 		}	
 	}
 	
+	public float getFridgeTemp(){
+		return this.fridgeTemp;
+	}
+	
+	public float getFreezerTemp(){
+		return this.freezerTemp;
+	}
+	
+	public void setFridgeTemp(float temp){
+		this.fridgeTemp = temp;
+	}
+	
+	public void setFreezerTemp(float temp){
+		this.freezerTemp = temp;
+	}
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		System.out.println("----Tick----");
 		
-//		// If we are cooling or we are over the upper threshold.
-//		if(fridge.coolerIsRunning() || fridge.getTemp() > fridgeHigh){
-//			lowerFridgeTemp();
-//			
-//			if(Math.abs(fridge.getTemp() - fridgeLow) < tempDiffToStartCoolFridge){
-//				currentState.processEvent(new FridgeTempUnderThresholdEvent(instance));
-//			}
-//			
-//		
-//		// If we are not cooling or we are below the lower threshold.
-//		} else if (!fridge.coolerIsRunning() || fridge.getTemp() < fridgeLow){
-//			raiseFridgeTemp();
-//			
-//			if(Math.abs(fridge.getTemp() - fridgeHigh) < tempDiffToStartCoolFridge){
-//				fridge.setCooler(true);
-//			}
-//			gui.turnFridgeCoolerOff();
-//		}
+		
+
 //		
 //		// Update the GUI labels
 //		gui.setFridgeTempLbl(GUI.FRIDGE_TEMP +
@@ -152,8 +150,9 @@ public class RefrigeratorContext implements Observer{
 	public void setRoomTemp(float temp){
 		// verifies in range
 		if (temp <= roomHigh && temp >= roomLow){
-			fridge.setTemp(temp);
-			freezer.setTemp(temp);
+			fridgeTemp = temp;
+			freezerTemp = temp;
+			roomTemp = temp;
 			((GUI) refrigeratorDisplay).setRoomFieldText("");
 			((GUI) refrigeratorDisplay).setErrorLbl("");
 			((GUI) refrigeratorDisplay).setErrorLblVisible(false);
@@ -163,13 +162,15 @@ public class RefrigeratorContext implements Observer{
 		}
 	}
 	
+	public int[] getFridgeData(){
+		return fridgeData;
+	}
+	
 	/**
 	 * Method called by GUI to initialized default/config variables.
-	 * @param data
-	 */
-	public void setData(int[] data){
-		if(data.length == 14){
-			fridgeLow = data[0]; 
+	 * The ordering is as follows:
+	 * 
+	 * 		fridgeLow = data[0]; 
 			fridgeHigh = data[1]; 
 			freezerLow = data[2];
 			freezerHigh = data[3]; 
@@ -182,6 +183,29 @@ public class RefrigeratorContext implements Observer{
 			tempDiffToStartCoolFridge = data[10];
 			tempDifftoStartCoolFreezer = data[11];
 			minutesToCoolFridge1 = data[12];
+			minutesToCoolFreezer1 = data[13];
+	 * @param data
+	 */
+	public void setData(int[] data){
+		if(data.length == 14){
+			roomLow = data[4];
+			roomHigh = data[5]; 
+			
+			
+			fridgeData[0] = data[0];
+			fridgeData[1] = data[1];
+			fridgeData[2] = data[6];
+			fridgeData[3] = data[7];
+			fridgeData[4] = data[10];
+			fridgeData[5] = data[12];	
+							
+			
+			
+			freezerLow = data[2];
+			freezerHigh = data[3]; 	
+			freezerUp1DoorClosed = data[8]; 
+			freezerUp1DoorOpen = data[9];
+			tempDifftoStartCoolFreezer = data[11];
 			minutesToCoolFreezer1 = data[13];
 		}
 	}

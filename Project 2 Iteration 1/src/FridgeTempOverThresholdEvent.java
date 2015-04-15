@@ -12,8 +12,6 @@ public class FridgeTempOverThresholdEvent extends RefrigeratorEvent{
 			try{
 				((FridgeTempOverThresholdListener) listener).processEvent(this);
 			}catch(ClassCastException cce){
-				JOptionPane.showMessageDialog(null, "Can't cast event to class FridgeTempOverThresholdListener.", 
-						"Class Cast Exception", JOptionPane.ERROR_MESSAGE);
 				cce.printStackTrace();
 			}
 		
