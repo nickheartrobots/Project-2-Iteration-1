@@ -90,6 +90,7 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 
 		frame = new RefrigeratorFrame();
 		context = RefrigeratorContext.instance();
+		context.setData(data);
 		frame.add(new Panel());
 
 		frame.centerGUI();
@@ -103,7 +104,8 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 		//setData() and init() because can't pass args to contructor of a singleton
 		//refrigerator.init(this);
 
-		context.setData(data);
+		
+		context.initialize();
 		//start the clock.
 	}
 
@@ -236,7 +238,7 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 	 */
 
 	public void setFridgeTempLbl(String string) {
-		fridgeTempLbl.setText("xxxxx");
+		fridgeTempLbl.setText("Fridge Temp " + string);
 		frame.repaint();
 	}
 

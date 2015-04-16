@@ -16,6 +16,9 @@ public abstract class RefrigeratorState {
 	protected RefrigeratorState() {
 		context = RefrigeratorContext.instance();
 		display = context.getDisplay();
+	}
+	
+	public static void initialize(){
 		int[] fridgeData = context.getFridgeData();
 		fridgeLow = fridgeData[0];
 		fridgeHigh = fridgeData[1];
@@ -23,6 +26,9 @@ public abstract class RefrigeratorState {
 		fridgeUp1DoorOpen = fridgeData[3];
 		tempDiffToStartCoolFridge = fridgeData[4];
 		minutesToCoolFridge1 = fridgeData[5];
+		for(int i = 0; i < fridgeData.length; i++){
+			System.out.println("fridgeData "+ fridgeData[i]);
+		}
 	}
 	
 	/**

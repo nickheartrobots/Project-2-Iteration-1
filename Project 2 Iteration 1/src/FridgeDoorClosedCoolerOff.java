@@ -1,6 +1,6 @@
 
 public class FridgeDoorClosedCoolerOff extends RefrigeratorState 
-	implements FridgeDoorOpenListener, FridgeTempOverThresholdListener, ClockTickedListener{
+	implements FridgeDoorOpenListener, FridgeTempOverThresholdListener, ClockTickedListener, FridgeDoorCloseListener{
 
 	private static FridgeDoorClosedCoolerOff instance;
 	
@@ -17,7 +17,7 @@ public class FridgeDoorClosedCoolerOff extends RefrigeratorState
 	 */
 	public static FridgeDoorClosedCoolerOff instance() {
 		if (instance == null) {
-			instance = new FridgeDoorClosedCoolerOff();
+			instance = new FridgeDoorClosedCoolerOff();			
 		}
 		return instance;
 	}
@@ -45,6 +45,18 @@ public class FridgeDoorClosedCoolerOff extends RefrigeratorState
 
 		context.changeCurrentState(FridgeDoorOpenCoolerOff.instance());
 	}
+	
+	/**
+	 * 
+	 * handle door close event, since people push buttons just to see what they do
+	 */
+
+
+	@Override
+	public void processEvent(FridgeDoorCloseEvent event) {
+		//do nothing
+		
+	}
 
 	/**
 	 * handle temp goes over threshold event
@@ -65,9 +77,11 @@ public class FridgeDoorClosedCoolerOff extends RefrigeratorState
 	public void processEvent(ClockTickedEvent event) {
 		context.setFridgeTemp(context.getFridgeTemp() + ((float) 1/(float) fridgeUp1DoorClosed));
 		((GUI)display).setFridgeTempLbl(context.getFridgeTemp() + "");
+
 	
 		if(Math.abs(context.getFridgeTemp() - fridgeHigh) < tempDiffToStartCoolFridge){
 			context.handleEvent(new FridgeTempOverThresholdEvent(display));
 		}	
 	}
+
 }

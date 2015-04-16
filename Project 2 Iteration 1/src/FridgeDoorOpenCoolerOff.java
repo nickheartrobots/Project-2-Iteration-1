@@ -1,6 +1,6 @@
 
 public class FridgeDoorOpenCoolerOff extends RefrigeratorState implements 
-	FridgeDoorCloseListener, FridgeTempOverThresholdListener, ClockTickedListener{
+	FridgeDoorCloseListener, FridgeTempOverThresholdListener, FridgeDoorOpenListener, ClockTickedListener{
 
 	private static FridgeDoorOpenCoolerOff instance;
 	
@@ -33,6 +33,13 @@ public class FridgeDoorOpenCoolerOff extends RefrigeratorState implements
 	public void run() {
 		display.turnFridgeLightOn();
 		display.turnFridgeCoolerOff();
+		((GUI)display).setFridgeTempLbl(context.getFridgeTemp() + "");
+		
+	}
+	
+	@Override
+	public void processEvent(FridgeDoorOpenEvent event) {
+		//do nothing
 		
 	}
 
@@ -44,8 +51,14 @@ public class FridgeDoorOpenCoolerOff extends RefrigeratorState implements
 
 	@Override
 	public void processEvent(ClockTickedEvent event) {
-		// TODO Auto-generated method stub
-		
+		context.setFridgeTemp(context.getFridgeTemp() + ((float) 1/(float) fridgeUp1DoorClosed));
+		((GUI)display).setFridgeTempLbl(context.getFridgeTemp() + "");
+	
+		if(Math.abs(context.getFridgeTemp() - fridgeHigh) < tempDiffToStartCoolFridge){
+			context.handleEvent(new FridgeTempOverThresholdEvent(display));
+		}	
 	}
+
+
 
 }

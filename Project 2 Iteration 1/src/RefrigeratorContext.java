@@ -36,6 +36,7 @@ public class RefrigeratorContext implements Observer{
 		refrigeratorDisplay = GUI.instance();
 		currentState = FridgeDoorClosedCoolerOff.instance();
 
+
 	}
 
 	/**
@@ -59,6 +60,11 @@ public class RefrigeratorContext implements Observer{
 		currentState.run();
 		fridgeTemp = (roomHigh + roomLow)/2;
 		freezerTemp = roomLow/2;
+		System.out.println(" intialize fridgeTemp " + fridgeTemp);
+		
+		//sets all input variables in the RefrigeratorState superclass
+		currentState.initialize();
+		
 	}
 
 	/**
@@ -108,7 +114,7 @@ public class RefrigeratorContext implements Observer{
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		System.out.println("----Tick----");
-		
+		handleEvent(new ClockTickedEvent(refrigeratorDisplay));
 		
 
 //		
