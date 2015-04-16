@@ -54,4 +54,6 @@ public class FridgeDoorOpenCoolerOn extends RefrigeratorState implements
 	}
 
 
+
+
 }

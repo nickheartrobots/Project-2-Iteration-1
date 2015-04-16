@@ -31,11 +31,16 @@ import javax.swing.JTextField;
  * that title.
  */
 public class GUI extends RefrigeratorDisplay implements ActionListener {
-	
+
 	private RefrigeratorFrame frame;
 	private RefrigeratorContext context;
 
 	private int[] data = new int[14];
+	private int fridgeHigh;
+	private int fridgeLow;
+	private int freezerHigh;
+	private int freezerLow;
+	
 
 	public static final String FRIDGE_LIGHT_ON = "Fridge light <on>";
 	public static final String FRIDGE_LIGHT_OFF = "Fridge light <off>";
@@ -104,63 +109,10 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 		//setData() and init() because can't pass args to contructor of a singleton
 		//refrigerator.init(this);
 
-		
+
 		context.initialize();
 		//start the clock.
 	}
-
-
-
-	/**
-	 * @author Nick Clarity
-	 * Project 2 Iteration 1
-	 * Apr 1, 2015
-	 * 
-	 * Action Listener class for all the Button presses.
-	 */
-	//	private class Listen implements ActionListener{
-	//		@Override
-	//		public void actionPerformed(ActionEvent e) {
-	//			if(e.getSource() == setRoomTemp){
-	//				
-	//				// parse temps to send to Refrigerator
-	//				
-	//
-	//				// parse temps to send to Refrigerator
-	//			} else if (e.getSource() == setFridgeTemp){
-	//				try{
-	//					String t1 = fridgeField.getText();
-	//					float t2 = Float.parseFloat(t1);
-	//					
-	//					setErrorLbl("");
-	//					setErrorLblVisible(false);
-	//
-	//					//refrigerator.setFridgeTemp(t2);
-	//				}catch(NumberFormatException nfe){
-	//					fridgeField.setText("");
-	//					
-	//					setErrorLblVisible(true);
-	//					setErrorLbl("Fridge Temp must be a number.");
-	//				}
-	//
-	//				// parse temps to send to Refrigerator
-	//			} else if (e.getSource() == setFreezerTemp){
-	//				try{
-	//					String t1 = freezerField.getText();
-	//					float t2 = Float.parseFloat(t1);
-	//
-	//					setErrorLbl("");
-	//					setErrorLblVisible(false);
-	//					
-	//					//refrigerator.setFreezerTemp(t2);
-	//				}catch(NumberFormatException nfe){
-	//					freezerField.setText("");
-	//					
-	//					setErrorLblVisible(true);
-	//					setErrorLbl("Freezer Temp must be a number.");
-	//				}
-	//		}
-	//	}
 
 	private class RefrigeratorFrame extends JFrame{
 
@@ -436,8 +388,12 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 						float t2 = Float.parseFloat(t1);
 						setErrorLbl("");
 						setErrorLblVisible(false);
-						context.setFridgeTemp(t2);
-						
+						if(t2 >= fridgeLow && t2 <= fridgeHigh){
+							context.setFridgeTemp(t2);
+						}else{
+							setErrorLblVisible(true);
+							setErrorLbl("Fridge Temp must be between " + fridgeLow + " and " + fridgeHigh + ".");
+						}
 					}catch(NumberFormatException nfe){
 						fridgeField.setText("");
 
@@ -457,8 +413,12 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 
 						setErrorLbl("");
 						setErrorLblVisible(false);
-
-						//context.setFreezerTemp(t2);
+						if(t2 >= freezerLow && t2 <= freezerHigh){
+							context.setFreezerTemp(t2);
+						}else{
+							setErrorLblVisible(true);
+							setErrorLbl("Freezer Temp must be between " + freezerLow + " and " + freezerHigh + ".");
+					}
 					}catch(NumberFormatException nfe){
 						freezerField.setText("");
 
@@ -541,6 +501,14 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 		}
 	}
 
+	@Override
+	public void actionPerformed(ActionEvent event) {
+		((GUIButton) event.getSource()).inform(context, this);
+
+	}
+	
+	
+
 	/*
 	 * Method to input the content of the config File.
 	 * 
@@ -600,12 +568,17 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 			data[i] = Integer.parseInt(input.next());
 			i++;
 		}
-
+		fridgeLow = data[0]; 
+		fridgeHigh = data[1];
+		freezerLow = data[2];
+		freezerHigh = data[3]; 
 		//print to console so we know it's there.
 		for(int val:data){
 			System.out.println(val);
 		}
 	}
+
+
 
 	/**
 	 * Main method
@@ -622,11 +595,7 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 		}
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent event) {
-		((GUIButton) event.getSource()).inform(context, this);
 
-	}
 
 
 

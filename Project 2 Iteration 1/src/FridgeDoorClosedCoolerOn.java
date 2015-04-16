@@ -1,6 +1,6 @@
 
 public class FridgeDoorClosedCoolerOn extends RefrigeratorState implements 
-	FridgeTempUnderThresholdListener, FridgeDoorOpenListener, ClockTickedListener {
+	FridgeTempUnderThresholdListener, FridgeDoorOpenListener, ClockTickedListener, FridgeDoorCloseListener {
 
 	private static FridgeDoorClosedCoolerOn instance;
 
@@ -57,4 +57,10 @@ public class FridgeDoorClosedCoolerOn extends RefrigeratorState implements
 			context.handleEvent(new FridgeTempUnderThresholdEvent(display));
 		}	
 	}
+
+	@Override
+	public void processEvent(FridgeDoorCloseEvent event) {
+		//do nothing
+	}
+
 }
