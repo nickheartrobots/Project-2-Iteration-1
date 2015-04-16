@@ -53,7 +53,7 @@ public class FridgeDoorClosedCoolerOn extends RefrigeratorState implements
 		context.setFridgeTemp(context.getFridgeTemp() - ((float) 1 / (float) minutesToCoolFridge1));
 		((GUI)display).setFridgeTempLbl(context.getFridgeTemp() + "");
 		
-		if((Math.abs(context.getFridgeTemp() - fridgeLow) < tempDiffToStartCoolFridge)){
+		if((context.getFridgeTemp() < fridgeHigh) && (context.getFridgeTemp() - fridgeLow < tempDiffToStartCoolFridge)){
 			context.handleEvent(new FridgeTempUnderThresholdEvent(display));
 		}	
 	}

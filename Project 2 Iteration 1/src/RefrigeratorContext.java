@@ -110,10 +110,11 @@ public class RefrigeratorContext implements Observer{
 	public void setFreezerTemp(float temp){
 		freezerTemp = temp;
 	}
+	
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		System.out.println("----Tick----");
-		handleEvent(new ClockTickedEvent(refrigeratorDisplay));
+		handleEvent(new ClockTickedEvent(this));
 	}
 	
 	/**
