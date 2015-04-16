@@ -79,7 +79,7 @@ public class FridgeDoorClosedCoolerOff extends RefrigeratorState
 		((GUI)display).setFridgeTempLbl(context.getFridgeTemp() + "");
 
 	
-		if(Math.abs(context.getFridgeTemp() - fridgeHigh) < tempDiffToStartCoolFridge){
+		if(Math.abs(context.getFridgeTemp() - fridgeHigh) > tempDiffToStartCoolFridge){
 			context.handleEvent(new FridgeTempOverThresholdEvent(display));
 		}	
 	}

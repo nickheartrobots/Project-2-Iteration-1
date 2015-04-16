@@ -32,6 +32,7 @@ public class FridgeDoorOpenCoolerOn extends RefrigeratorState implements
 	public void run() {
 		display.turnFridgeCoolerOn();
 		display.turnFridgeLightOn();
+		((GUI)display).setFridgeTempLbl(context.getFridgeTemp() + "");
 		
 	}
 
@@ -43,7 +44,12 @@ public class FridgeDoorOpenCoolerOn extends RefrigeratorState implements
 
 	@Override
 	public void processEvent(ClockTickedEvent event) {
-		// TODO Auto-generated method stub
+		context.setFridgeTemp(context.getFridgeTemp() - ((float) 1 / (float) minutesToCoolFridge1));
+		((GUI)display).setFridgeTempLbl(context.getFridgeTemp() + "");
+		
+		if((Math.abs(context.getFridgeTemp() - fridgeLow) < tempDiffToStartCoolFridge)){
+			context.handleEvent(new FridgeTempUnderThresholdEvent(display));
+		}	
 		
 	}
 

@@ -219,16 +219,18 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 	 * Sets Fridge light label to OFF
 	 * 
 	 */
+	@Override
 	public void turnFridgeLightOff() {
-		this.fridgeTempLbl.setText(FRIDGE_LIGHT_OFF);
+		this.fridgeLightLbl.setText(FRIDGE_LIGHT_OFF);
 		frame.repaint();
 	}
 
 	/**
 	 * Sets Fridge light label to ON 
 	 */
+	@Override
 	public void turnFridgeLightOn() {
-		this.fridgeTempLbl.setText(FRIDGE_LIGHT_ON);
+		this.fridgeLightLbl.setText(FRIDGE_LIGHT_ON);
 		frame.repaint();
 	}
 
@@ -432,11 +434,10 @@ public class GUI extends RefrigeratorDisplay implements ActionListener {
 					try{
 						String t1 = fridgeField.getText();
 						float t2 = Float.parseFloat(t1);
-
 						setErrorLbl("");
 						setErrorLblVisible(false);
-
 						context.setFridgeTemp(t2);
+						
 					}catch(NumberFormatException nfe){
 						fridgeField.setText("");
 
